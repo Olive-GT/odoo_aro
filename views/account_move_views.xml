@@ -4,15 +4,20 @@
         <field name="model">account.move</field>
         <field name="inherit_id" ref="account.view_move_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//sheet" position="after">
-                <group string="Campos Personalizados">
-                    <group>
-                        <field name="serie"/>
-                        <field name="numero"/>
-                        <field name="tipo_dte"/>
-                        <field name="descripcion_general"/>
-                    </group>
-                </group>
+            <!-- Add fields to main invoice header area -->
+            <xpath expr="//field[@name='invoice_date']" position="after">
+                <field name="serie"/>
+                <field name="numero"/>
+                <field name="tipo_dte"/>
+            </xpath>
+            
+            <!-- Add description field to Other Info > Accounting section -->
+            <xpath expr="//page[@name='other_info']//group[@name='accounting_info']" position="inside">
+                <field name="descripcion_general"/>
+            </xpath>
+            
+            <!-- Remove the previously added custom group -->
+            <xpath expr="//sheet//group[@string='Campos Personalizados']" position="replace">
             </xpath>
         </field>
     </record>
