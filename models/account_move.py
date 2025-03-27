@@ -5,15 +5,15 @@ from odoo.exceptions import ValidationError
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
-    serie = fields.Char(string='Serie', required=True)
-    numero = fields.Char(string='Número', required=True)
+    serie = fields.Char(string='Serie', required=False)
+    numero = fields.Char(string='Número', required=False)
     tipo_dte = fields.Selection([
         ('FACT', 'Factura'),
         ('NDEB', 'Nota de Débito'),
         ('NCRE', 'Nota de Crédito'),
         ('FPEQ', 'Factura Pequeño Contribuyente'),
         ('FESP', 'Factura Especial'),
-    ], string='Tipo DTE', required=True)
+    ], string='Tipo DTE', required=False)
     descripcion_general = fields.Text(string='Descripción General')
 
     _sql_constraints = [
@@ -27,4 +27,4 @@ class AccountMoveLine(models.Model):
         ('bien', 'Bien'),
         ('servicio', 'Servicio'),
         ('combustible', 'Combustible'),
-    ], string='Tipo', required=True, default='bien')
+    ], string='Tipo', required=False, default='bien')
