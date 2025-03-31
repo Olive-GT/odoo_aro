@@ -9,7 +9,10 @@
     'website': "",
     'category': 'Accounting',
     'version': '18.0.1.0',
-    'depends': ['account', 'base'],
+    'depends': [
+        'account',
+        'base',
+        'report_xlsx'],
     'data': [
         'security/ir.model.access.csv',
         'views/res_config_settings_view.xml',
