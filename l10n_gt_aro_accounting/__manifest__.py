@@ -18,7 +18,7 @@
         'security/ir.model.access.csv',
         'views/res_config_settings_view.xml',
         'views/reporte_libros_views.xml',
-        'reports/libros_report_template.xml',
+        'reports/libros_report_template_v1.xml',
     ],
     'installable': True,
     'application': False,

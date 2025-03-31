@@ -51,6 +51,7 @@
         name="l10n_gt_aro_accounting.reporte_libros_pdf_template"
         file="l10n_gt_aro_accounting.reporte_libros_pdf_template"
         print_report_name="'Reporte_Fiscal_' + object.libro"
+        noupdate="0"
     />
 
     <!-- Acción del reporte Excel -->
@@ -62,5 +63,6 @@
         name="report.l10n_gt_aro_accounting.reporte_libros_excel"
         file="Reporte Fiscal Excel"
         print_report_name="'Reporte_Fiscal_' + object.libro"
+        noupdate="0"
     />
 </odoo>
