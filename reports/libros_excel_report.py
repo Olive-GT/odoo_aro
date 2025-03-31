@@ -3,7 +3,6 @@ from odoo import models
 import io
 import xlsxwriter
 from odoo.http import request
-from odoo.tools.misc import xlsxwriter_workbook_options
 from odoo.tools import date_utils
 
 
