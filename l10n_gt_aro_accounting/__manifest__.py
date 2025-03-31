@@ -19,7 +19,6 @@
         'views/res_config_settings_view.xml',
         'views/reporte_libros_views.xml',
         'reports/libros_report_template.xml',
-        'reports/libros_excel_report.py',
     ],
     'installable': True,
     'application': False,
