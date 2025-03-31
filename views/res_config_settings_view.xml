@@ -1,0 +1,12 @@
+<record id="res_config_settings_view_form_inherit_isr" model="ir.ui.view">
+    <field name="name">res.config.settings.view.form.inherit.isr</field>
+    <field name="model">res.config.settings</field>
+    <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+    <field name="arch" type="xml">
+        <xpath expr="//div[@id='account_default_section']" position="after">
+            <div class="app_settings_block" string="ISR">
+                <field name="isr_account_id"/>
+            </div>
+        </xpath>
+    </field>
+</record>

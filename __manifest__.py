@@ -9,8 +9,10 @@
     'website': "",
     'category': 'Accounting',
     'version': '18.0.1.0',
-    'data': [],
     'depends': ['account', 'base'],
+    'data': [
+        'views/res_config_settings_view.xml',
+    ],
     'installable': True,
     'application': False,
     'license': 'LGPL-3',
