@@ -52,12 +52,3 @@ class AccountMove(models.Model):
     _sql_constraints = [
         ('unique_serie_numero', 'unique(serie, numero)', 'La combinación de Serie y Número debe ser única.')
     ]
-
-class AccountMoveLine(models.Model):
-    _inherit = 'account.move.line'
-
-    tipo = fields.Selection([
-        ('bien', 'Bien'),
-        ('servicio', 'Servicio'),
-        ('combustible', 'Combustible'),
-    ], string='Tipo', required=False, default='bien')
