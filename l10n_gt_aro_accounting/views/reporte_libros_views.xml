@@ -35,26 +35,4 @@
     <menuitem id="menu_reporte_fiscal_root" name="Reportes Fiscales" parent="account.menu_finance_reports" sequence="20"/>
 
     <menuitem id="menu_reporte_libros_wizard" name="Libro de Ventas/Compras" parent="menu_reporte_fiscal_root" action="action_reporte_libros_wizard"/>
-
-    <!-- PDF Report Action -->
-    <report
-        id="reporte_libros_pdf"
-        string="Reporte Libros PDF"
-        model="reporte.libros.wizard"
-        report_type="qweb-pdf"
-        name="l10n_gt_aro_accounting.reporte_libros_pdf_template"
-        file="l10n_gt_aro_accounting.reporte_libros_pdf_template"
-        print_report_name="'Reporte_Fiscal_' + object.libro"
-    />
-
-    <!-- Excel Report Action -->
-    <report
-        id="reporte_libros_excel"
-        string="Reporte Libros Excel"
-        model="reporte.libros.wizard"
-        report_type="xlsx"
-        name="report.l10n_gt_aro_accounting.reporte_libros_excel"
-        file="Reporte Fiscal Excel"
-        print_report_name="'Reporte_Fiscal_' + object.libro"
-    />
 </odoo>

@@ -1,4 +1,5 @@
 <odoo>
+    <!-- Template del reporte PDF -->
     <template id="reporte_libros_pdf_template">
         <t t-call="web.external_layout">
             <div class="page">
@@ -40,4 +41,26 @@
             </div>
         </t>
     </template>
+
+    <!-- Acción del reporte PDF -->
+    <report
+        id="reporte_libros_pdf"
+        string="Reporte Libros PDF"
+        model="reporte.libros.wizard"
+        report_type="qweb-pdf"
+        name="l10n_gt_aro_accounting.reporte_libros_pdf_template"
+        file="l10n_gt_aro_accounting.reporte_libros_pdf_template"
+        print_report_name="'Reporte_Fiscal_' + object.libro"
+    />
+
+    <!-- Acción del reporte Excel -->
+    <report
+        id="reporte_libros_excel"
+        string="Reporte Libros Excel"
+        model="reporte.libros.wizard"
+        report_type="xlsx"
+        name="report.l10n_gt_aro_accounting.reporte_libros_excel"
+        file="Reporte Fiscal Excel"
+        print_report_name="'Reporte_Fiscal_' + object.libro"
+    />
 </odoo>
