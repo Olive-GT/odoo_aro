@@ -22,7 +22,7 @@ class ReporteLibrosWizard(models.TransientModel):
         data = self.env['reporte.fiscal.utils'].get_factura_data(
             self.date_start, self.date_end, self.journal_id, self.libro
         )
-        return self.env.ref('l10n_gt_aro_accounting.reporte_libros_pdf').report_action(self, data={'lines': data, 'folio_inicial': self.folio_inicial})
+        return self.env.ref('l10n_gt_aro_accounting.action_report_libros_pdf').report_action(self, data={'lines': data, 'folio_inicial': self.folio_inicial})
 
     def action_generar_excel(self):
         return self.env.ref('l10n_gt_aro_accounting.reporte_libros_excel').report_action(self, data={
