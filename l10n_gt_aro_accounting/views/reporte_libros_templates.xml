@@ -1,44 +1,46 @@
 <odoo>
     <!-- Template del reporte PDF -->
     <template id="reporte_libros_pdf_template">
-        <t t-call="web.external_layout">
-            <div class="page">
-                <h2>Reporte de <t t-esc="doc.libro.title()"/></h2>
-                <p><strong>Desde:</strong> <t t-esc="doc.date_start"/>  <strong>Hasta:</strong> <t t-esc="doc.date_end"/></p>
-                <p><strong>Diario:</strong> <t t-esc="doc.journal_id.display_name"/></p>
-                <p><strong>Folio Inicial:</strong> <t t-esc="data['folio_inicial']"/></p>
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <h2>Reporte de <t t-esc="data.get('libro', '').title()"/></h2>
+                    <p><strong>Desde:</strong> <t t-esc="data.get('date_start')"/>  <strong>Hasta:</strong> <t t-esc="data.get('date_end')"/></p>
+                    <p><strong>Diario:</strong> <t t-esc="data.get('journal_name')"/></p>
+                    <p><strong>Folio Inicial:</strong> <t t-esc="data.get('folio_inicial')"/></p>
 
-                <table class="table table-sm mt32">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Fecha</th>
-                            <th>Serie</th>
-                            <th>Número</th>
-                            <th>NIT</th>
-                            <th>Compañía</th>
-                            <th class="text-right">Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <t t-set="index" t-value="data['folio_inicial']"/>
-                        <t t-foreach="data['lines']" t-as="line">
+                    <table class="table table-sm mt32">
+                        <thead>
                             <tr>
-                                <td><t t-esc="index"/></td>
-                                <td><t t-esc="line['fecha']"/></td>
-                                <td><t t-esc="line['serie']"/></td>
-                                <td><t t-esc="line['numero']"/></td>
-                                <td><t t-esc="line['nit']"/></td>
-                                <td><t t-esc="line['compania']"/></td>
-                                <td class="text-right">
-                                    <t t-esc="'{:,.2f}'.format(line['total'])"/>
-                                </td>
+                                <th>#</th>
+                                <th>Fecha</th>
+                                <th>Serie</th>
+                                <th>Número</th>
+                                <th>NIT</th>
+                                <th>Compañía</th>
+                                <th class="text-right">Total</th>
                             </tr>
-                            <t t-set="index" t-value="index + 1"/>
-                        </t>
-                    </tbody>
-                </table>
-            </div>
+                        </thead>
+                        <tbody>
+                            <t t-set="index" t-value="data.get('folio_inicial', 1)"/>
+                            <t t-foreach="data.get('lines', [])" t-as="line">
+                                <tr>
+                                    <td><t t-esc="index"/></td>
+                                    <td><t t-esc="line.get('fecha')"/></td>
+                                    <td><t t-esc="line.get('serie')"/></td>
+                                    <td><t t-esc="line.get('numero')"/></td>
+                                    <td><t t-esc="line.get('nit')"/></td>
+                                    <td><t t-esc="line.get('compania')"/></td>
+                                    <td class="text-right">
+                                        <t t-esc="'{:,.2f}'.format(line.get('total', 0.0))"/>
+                                    </td>
+                                </tr>
+                                <t t-set="index" t-value="index + 1"/>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
         </t>
     </template>
 </odoo>

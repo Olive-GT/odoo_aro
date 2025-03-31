@@ -1,14 +1,15 @@
 <odoo>
     <!-- Acción del reporte PDF -->
-    <report
-        id="action_report_libros_pdf"
-        string="Reporte Libros PDF"
-        model="reporte.libros.wizard"
-        report_type="qweb-pdf"
-        name="l10n_gt_aro_accounting.reporte_libros_pdf_template"
-        file="l10n_gt_aro_accounting.reporte_libros_pdf_template"
-        print_report_name="'Reporte_Fiscal_' + object.libro"
-    />
+    <record id="action_report_libros_pdf" model="ir.actions.report">
+        <field name="name">Reporte Libros PDF</field>
+        <field name="model">reporte.libros.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">l10n_gt_aro_accounting.reporte_libros_pdf_template</field>
+        <field name="report_file">l10n_gt_aro_accounting.reporte_libros_pdf_template</field>
+        <field name="print_report_name">'Reporte_Fiscal_' + object.libro</field>
+        <field name="binding_model_id" ref="model_reporte_libros_wizard"/>
+        <field name="binding_type">report</field>
+    </record>
 
     <!-- Acción del reporte Excel -->
     <report
