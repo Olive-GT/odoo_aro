@@ -42,8 +42,8 @@
         string="Reporte Libros PDF"
         model="reporte.libros.wizard"
         report_type="qweb-pdf"
-        name="l10n_gt_aro_accounting.reporte_libros_pdf"
-        file="l10n_gt_aro_accounting.reporte_libros_pdf"
+        name="l10n_gt_aro_accounting.reporte_libros_pdf_template"
+        file="l10n_gt_aro_accounting.reporte_libros_pdf_template"
         print_report_name="'Reporte_Fiscal_' + object.libro"
     />
 
