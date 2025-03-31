@@ -12,7 +12,8 @@
     'depends': [
         'account',
         'base',
-        'report_xlsx'],
+        'report_xlsx'
+    ],
     'data': [
         'security/ir.model.access.csv',
         'views/res_config_settings_view.xml',

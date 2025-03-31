@@ -1,0 +1,4 @@
+[submodule "custom/reporting-engine"]
+	path = custom/reporting-engine
+	url = https://github.com/OCA/reporting-engine.git
+	branch = 18.0
