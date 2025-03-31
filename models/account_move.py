@@ -37,7 +37,6 @@ class AccountMove(models.Model):
                     'quantity': 1,
                     'price_unit': -isr,
                     'account_id': account.id,
-                    'exclude_from_invoice_tab': False,
                 })
 
     def _calcular_isr(self, total):
