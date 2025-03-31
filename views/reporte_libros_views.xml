@@ -1,0 +1,60 @@
+<!-- views/reporte_libros_views.xml -->
+<odoo>
+    <!-- Acción del wizard -->
+    <record id="action_reporte_libros_wizard" model="ir.actions.act_window">
+        <field name="name">Reporte Fiscal</field>
+        <field name="res_model">reporte.libros.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Vista del wizard con botones PDF y Excel -->
+    <record id="view_reporte_libros_wizard_form" model="ir.ui.view">
+        <field name="name">reporte.libros.wizard.form</field>
+        <field name="model">reporte.libros.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Generar Reporte Fiscal">
+                <group>
+                    <field name="libro"/>
+                    <field name="date_start"/>
+                    <field name="date_end"/>
+                    <field name="journal_id"/>
+                    <field name="tax_id"/>
+                    <field name="folio_inicial"/>
+                </group>
+                <footer>
+                    <button name="action_generar_pdf" string="Descargar PDF" type="object" class="btn-primary"/>
+                    <button name="action_generar_excel" string="Descargar Excel" type="object" class="btn-secondary"/>
+                    <button string="Cancelar" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Menú -->
+    <menuitem id="menu_reporte_fiscal_root" name="Reportes Fiscales" parent="account.menu_finance_reports" sequence="20"/>
+
+    <menuitem id="menu_reporte_libros_wizard" name="Libro de Ventas/Compras" parent="menu_reporte_fiscal_root" action="action_reporte_libros_wizard"/>
+
+    <!-- PDF Report Action -->
+    <report
+        id="reporte_libros_pdf"
+        string="Reporte Libros PDF"
+        model="reporte.libros.wizard"
+        report_type="qweb-pdf"
+        name="l10n_gt_aro_accounting.reporte_libros_pdf"
+        file="l10n_gt_aro_accounting.reporte_libros_pdf"
+        print_report_name="'Reporte_Fiscal_' + object.libro"
+    />
+
+    <!-- Excel Report Action -->
+    <report
+        id="reporte_libros_excel"
+        string="Reporte Libros Excel"
+        model="reporte.libros.wizard"
+        report_type="xlsx"
+        name="report.l10n_gt_aro_accounting.reporte_libros_excel"
+        file="Reporte Fiscal Excel"
+        print_report_name="'Reporte_Fiscal_' + object.libro"
+    />
+</odoo>

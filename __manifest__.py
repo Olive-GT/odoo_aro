@@ -12,6 +12,11 @@
     'depends': ['account', 'base'],
     'data': [
         'views/res_config_settings_view.xml',
+        'views/reporte_libros_views.xml',
+        'reports/libros_report_template.xml',
+    ],
+    'report': [
+        'reports/libros_excel_report.py',
     ],
     'installable': True,
     'application': False,
