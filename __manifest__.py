@@ -18,6 +18,9 @@
     'report': [
         'reports/libros_excel_report.py',
     ],
+    'security': [
+        'security/ir.model.access.csv',
+    ],
     'installable': True,
     'application': False,
     'license': 'LGPL-3',
