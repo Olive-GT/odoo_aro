@@ -3,8 +3,11 @@
     <template id="reporte_libros_pdf_template">
         <t t-call="web.html_container">
             <t t-call="web.external_layout">
+                <t t-set="libro_title" t-value="env.context.get('libro', '').title() if env.context.get('libro') else ''" />
                 <div class="page">
-                    <h2>Reporte de <t t-esc="data.get('libro', '').title()"/></h2>
+                    <h2 class="text-center">
+                        <t t-esc="libro_title"/>
+                    </h2>
                     <p><strong>Desde:</strong> <t t-esc="data.get('date_start')"/>  <strong>Hasta:</strong> <t t-esc="data.get('date_end')"/></p>
                     <p><strong>Diario:</strong> <t t-esc="data.get('journal_name')"/></p>
                     <p><strong>Folio Inicial:</strong> <t t-esc="data.get('folio_inicial')"/></p>
