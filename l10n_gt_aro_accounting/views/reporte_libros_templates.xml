@@ -26,7 +26,7 @@
                         </thead>
                         <tbody>
                             <t t-set="index" t-value="docs.folio_inicial"/>
-                            <t t-foreach="docs.lines" t-as="line">
+                            <t t-foreach="lines" t-as="line">
                                 <tr>
                                     <td><t t-esc="index"/></td>
                                     <td><t t-esc="line.get('fecha')"/></td>
