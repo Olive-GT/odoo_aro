@@ -6,10 +6,13 @@ class ReporteLibrosPdf(models.AbstractModel):
 
     @api.model
     def _get_report_values(self, docids, data=None):
+        docids = data.get('doc_ids', docids)
         wizard = self.env['reporte.libros.wizard'].browse(docids)
         return {
             'doc_ids': docids,
             'doc_model': 'reporte.libros.wizard',
             'docs': wizard,
             'lines': data.get('lines', []),
+            'libro': data.get('libro', ''),
         }
+

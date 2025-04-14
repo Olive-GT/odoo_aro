@@ -6,47 +6,47 @@
                 <t t-set="libro_title" t-value="env.context.get('libro', '').title() if env.context.get('libro') else ''" />
                 <div class="page">
                     <h2 class="text-center">
-                        <t t-esc="libro_title"/>
+                        <t t-set="libro_title" t-value="libro.title()"/>
                     </h2>
                     <t t-if="docs">
                         <t t-set="doc" t-value="docs[0]"/>
+
                         <p><strong>Desde:</strong> <t t-esc="doc.date_start"/>  <strong>Hasta:</strong> <t t-esc="doc.date_end"/></p>
                         <p><strong>Diario:</strong> <t t-esc="doc.journal_id.display_name"/></p>
                         <p><strong>Folio Inicial:</strong> <t t-esc="doc.folio_inicial"/></p>
 
                         <t t-set="index" t-value="doc.folio_inicial"/>
-                    </t>
 
-                    <table class="table table-sm mt32">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Fecha</th>
-                                <th>Serie</th>
-                                <th>Número</th>
-                                <th>NIT</th>
-                                <th>Compañía</th>
-                                <th class="text-right">Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <t t-set="index" t-value="docs.folio_inicial"/>
-                            <t t-foreach="lines" t-as="line">
+                        <table class="table table-sm mt32">
+                            <thead>
                                 <tr>
-                                    <td><t t-esc="index"/></td>
-                                    <td><t t-esc="line.get('fecha')"/></td>
-                                    <td><t t-esc="line.get('serie')"/></td>
-                                    <td><t t-esc="line.get('numero')"/></td>
-                                    <td><t t-esc="line.get('nit')"/></td>
-                                    <td><t t-esc="line.get('compania')"/></td>
-                                    <td class="text-right">
-                                        <t t-esc="'{:,.2f}'.format(line.get('total', 0.0))"/>
-                                    </td>
+                                    <th>#</th>
+                                    <th>Fecha</th>
+                                    <th>Serie</th>
+                                    <th>Número</th>
+                                    <th>NIT</th>
+                                    <th>Compañía</th>
+                                    <th class="text-right">Total</th>
                                 </tr>
-                                <t t-set="index" t-value="index + 1"/>
-                            </t>
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="lines" t-as="line">
+                                    <tr>
+                                        <td><t t-esc="index"/></td>
+                                        <td><t t-esc="line.get('fecha')"/></td>
+                                        <td><t t-esc="line.get('serie')"/></td>
+                                        <td><t t-esc="line.get('numero')"/></td>
+                                        <td><t t-esc="line.get('nit')"/></td>
+                                        <td><t t-esc="line.get('compania')"/></td>
+                                        <td class="text-right">
+                                            <t t-esc="'{:,.2f}'.format(line.get('total', 0.0))"/>
+                                        </td>
+                                    </tr>
+                                    <t t-set="index" t-value="index + 1"/>
+                                </t>
+                            </tbody>
+                        </table>
+                    </t>
                 </div>
             </t>
         </t>
