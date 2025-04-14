@@ -8,7 +8,7 @@
                     <h2 class="text-center">
                         <t t-esc="libro_title"/>
                     </h2>
-                    <p><strong>Desde:</strong> <t t-esc="docs.date_start"/>  <strong>Hasta:</strong> <t t-esc="data.get('date_end')"/></p>
+                    <p><strong>Desde:</strong> <t t-esc="docs.date_start"/>  <strong>Hasta:</strong> <t t-esc="docs.date_end"/></p>
                     <p><strong>Diario:</strong> <t t-esc="docs.journal_id.display_name"/></p>
                     <p><strong>Folio Inicial:</strong> <t t-esc="docs.folio_inicial"/></p>
 
