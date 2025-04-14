@@ -8,9 +8,9 @@
                     <h2 class="text-center">
                         <t t-esc="libro_title"/>
                     </h2>
-                    <p><strong>Desde:</strong> <t t-esc="data.get('date_start')"/>  <strong>Hasta:</strong> <t t-esc="data.get('date_end')"/></p>
-                    <p><strong>Diario:</strong> <t t-esc="data.get('journal_name')"/></p>
-                    <p><strong>Folio Inicial:</strong> <t t-esc="data.get('folio_inicial')"/></p>
+                    <p><strong>Desde:</strong> <t t-esc="docs.date_start"/>  <strong>Hasta:</strong> <t t-esc="data.get('date_end')"/></p>
+                    <p><strong>Diario:</strong> <t t-esc="docs.journal_id.display_name"/></p>
+                    <p><strong>Folio Inicial:</strong> <t t-esc="docs.folio_inicial"/></p>
 
                     <table class="table table-sm mt32">
                         <thead>
@@ -25,8 +25,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <t t-set="index" t-value="data.get('folio_inicial', 1)"/>
-                            <t t-foreach="data.get('lines', [])" t-as="line">
+                            <t t-set="index" t-value="docs.folio_inicial"/>
+                            <t t-foreach="docs.lines" t-as="line">
                                 <tr>
                                     <td><t t-esc="index"/></td>
                                     <td><t t-esc="line.get('fecha')"/></td>
