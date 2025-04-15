@@ -1,7 +1,0 @@
-<odoo>
-    <template id="internal_layout_landscape" inherit_id="web.internal_layout" name="Internal Layout Landscape">
-        <xpath expr="//main" position="attributes">
-            <attribute name="class">o_report_layout o_report_landscape</attribute>
-        </xpath>
-    </template>
-</odoo>

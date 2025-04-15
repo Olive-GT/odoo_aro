@@ -17,8 +17,6 @@
     'data': [
         'security/ir.model.access.csv',
         'views/res_config_settings_view.xml',
-        'reports/internal_layout_landscape.xml',
-        'data/report_paperformat.xml',
         'views/reporte_libros_views.xml',
         'views/reporte_libros_templates.xml',
         'reports/libros_report_action.xml',
