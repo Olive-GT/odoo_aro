@@ -71,6 +71,7 @@
                         <thead>
                             <tr>
                                 <th>#</th>
+                                <th>Tipo</th>
                                 <th>Fecha</th>
                                 <th>Serie</th>
                                 <th>Número</th>
@@ -94,6 +95,7 @@
                             <t t-foreach="chunk" t-as="line">
                                 <tr>
                                     <td><t t-esc="index"/></td>
+                                    <td><t t-esc="line.get('tipo')"/></td>
                                     <td><t t-esc="line.get('fecha')"/></td>
                                     <td><t t-esc="line.get('serie')"/></td>
                                     <td><t t-esc="line.get('numero')"/></td>
@@ -138,6 +140,9 @@
                 </div>
                 
                 <h4 style="margin-top: 20px;">Resumen Global</h4>
+                <p style="margin-bottom: 10px;">
+                    <strong>Cantidad de Facturas:</strong> <span t-esc="summary.get('count', 0)"/>
+                </p>
                 <table class="summary-table table-bordered">
                     <thead>
                         <tr>

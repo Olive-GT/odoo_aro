@@ -45,6 +45,7 @@ class ReporteFiscalUtils(models.AbstractModel):
                 'peq': 0,
                 'iva': 0,
                 'total': 0,
+                'count': 0,
             }
 
             # Si la factura está cancelada → todo en cero
@@ -68,6 +69,7 @@ class ReporteFiscalUtils(models.AbstractModel):
                 summary['total'] = peq_total
                 global_summary['peq']['base'] += peq_total
                 global_summary['peq']['total'] += peq_total
+                global_summary['count'] += 1
 
                 data.append({
                     'tipo': move.tipo_dte,
@@ -146,6 +148,7 @@ class ReporteFiscalUtils(models.AbstractModel):
                 'total': factura_total,
                 'resumen': summary
             })
+            global_summary['count'] += 1
 
         return {
             'facturas': data,
