@@ -76,15 +76,15 @@
                                 <th>Número</th>
                                 <th>NIT</th>
                                 <th>Compañía</th>
-                                <th class="text-right">Bienes</th>
-                                <th class="text-right">Bienes Exento</th>
-                                <th class="text-right">Servicios</th>
-                                <th class="text-right">Servicios Exento</th>
-                                <th class="text-right">Combustible</th>
-                                <th class="text-right">Combustible Exento</th>
-                                <th class="text-right">Importación</th>
-                                <th class="text-right">Importación Exento</th>
-                                <th class="text-right">Peq. Contribuyente</th>
+                                <th class="text-right">Bien.</th>
+                                <th class="text-right">Bien. Ex.</th>
+                                <th class="text-right">Serv.</th>
+                                <th class="text-right">Serv. Ex.</th>
+                                <th class="text-right">Comb.</th>
+                                <th class="text-right">Comb. Ex.</th>
+                                <th class="text-right">Impo.</th>
+                                <th class="text-right">Impo. Exe.</th>
+                                <th class="text-right">Peq.</th>
                                 <th class="text-right">IVA</th>
                                 <th class="text-right">Total</th>
                             </tr>
