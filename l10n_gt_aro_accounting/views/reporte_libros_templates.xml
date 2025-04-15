@@ -95,10 +95,10 @@
                             <t t-foreach="categorias" t-as="cat">
                                 <tr>
                                     <td><t t-esc="cat.title()"/></td>
-                                    <td class="text-right"><t t-set="base" t-value="summary[cat]['base']"/><t t-esc="'{:,.2f}'.format(base)"/></td>
-                                    <td class="text-right"><t t-set="iva" t-value="summary[cat]['iva']"/><t t-esc="'{:,.2f}'.format(iva)"/></td>
-                                    <td class="text-right"><t t-set="exento" t-value="summary[cat]['exento']"/><t t-esc="'{:,.2f}'.format(exento)"/></td>
-                                    <td class="text-right"><t t-set="total" t-value="summary[cat]['total']"/><t t-esc="'{:,.2f}'.format(total)"/></td>
+                                    <td class="text-right"><t t-set="base" t-value="summary.get(cat, {}).get('base', 0)"/><t t-esc="'{:,.2f}'.format(base)"/></td>
+                                    <td class="text-right"><t t-set="iva" t-value="summary.get(cat, {}).get('iva', 0)"/><t t-esc="'{:,.2f}'.format(iva)"/></td>
+                                    <td class="text-right"><t t-set="exento" t-value="summary.get(cat, {}).get('exento', 0)"/><t t-esc="'{:,.2f}'.format(exento)"/></td>
+                                    <td class="text-right"><t t-set="total" t-value="summary.get(cat, {}).get('total', 0)"/><t t-esc="'{:,.2f}'.format(total)"/></td>
                                     <t t-set="total_base" t-value="total_base + base"/>
                                     <t t-set="total_iva" t-value="total_iva + iva"/>
                                     <t t-set="total_exento" t-value="total_exento + exento"/>
