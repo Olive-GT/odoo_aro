@@ -4,6 +4,10 @@
             <t t-call="web.internal_layout">
                 <t t-set="report_type" t-value="'pdf'"/>
                 <style>
+                    @page {
+                        size: A4 landscape;
+                        margin: 10mm;
+                    }
                     .text-small { font-size: 10px; }
                     .table th, .table td { padding: 2px !important; font-size: 9px; }
                     .summary-table { margin-top: 10px; width: 100%; font-size: 9px; }
