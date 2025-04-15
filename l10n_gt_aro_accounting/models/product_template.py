@@ -4,6 +4,6 @@ class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
     type = fields.Selection(
-        selection_add=[('combustible', 'Combustible')],
+        selection_add=[('combustible', 'Combustible'), ('importacion', 'Importación')],
         ondelete={'combustible': 'set default'}
     )

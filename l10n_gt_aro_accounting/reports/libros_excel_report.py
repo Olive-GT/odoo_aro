@@ -17,6 +17,7 @@ class ReporteLibrosExcel(models.AbstractModel):
             data['date_start'],
             data['date_end'],
             self.env['account.journal'].browse(data['journal_id']),
+            data['tax_id'],
             data['libro']
         )
 

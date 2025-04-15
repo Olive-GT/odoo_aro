@@ -20,17 +20,19 @@ class ReporteLibrosWizard(models.TransientModel):
 
     def action_generar_pdf(self):
         data = self.env['reporte.fiscal.utils'].get_factura_data(
-            self.date_start, self.date_end, self.journal_id, self.libro
+            self.date_start, self.date_end, self.journal_id, self.tax_id, self.libro
         )
         
         # Build the complete data dictionary with all needed values
         report_data = {
-            'lines': data,
+            'lines': data['facturas'],
+            'summary': data['resumen_global'],
             'folio_inicial': self.folio_inicial,
             'libro': self.libro,
             'date_start': self.date_start,
             'date_end': self.date_end,
             'journal_name': self.journal_id.display_name,
+            'tax_id': self.tax_id.id,
             'doc_ids': self.ids,
             'doc_model': 'reporte.libros.wizard',
         }
