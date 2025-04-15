@@ -1,81 +1,147 @@
 <odoo>
     <template id="reporte_libros_pdf_template">
         <t t-call="web.html_container">
-            <t t-call="web.internal_layout">
+            <t t-call="web.basic_layout">
                 <style>
+                    /* Basic styling */
                     .text-small { font-size: 10px; }
                     .table th, .table td { padding: 2px !important; font-size: 9px; }
                     .summary-table { margin-top: 10px; width: 100%; font-size: 9px; }
+                    
+                    /* Page control styles */
+                    .page-header {
+                        position: running(header);
+                        border-bottom: 1px solid #ddd;
+                        padding-bottom: 8px;
+                        margin-bottom: 10px;
+                    }
+                    .folio-box {
+                        position: absolute;
+                        top: 10px;
+                        right: 10px;
+                        border: 1px solid #000;
+                        padding: 2px 8px;
+                        font-weight: bold;
+                    }
+                    
+                    /* Control max rows per page for pagination */
+                    .invoice-table tr:nth-child(30n) {
+                        page-break-after: always;
+                    }
+                    
+                    /* Force page breaks where needed */
+                    .page-break {
+                        page-break-before: always;
+                    }
+                    
+                    /* Hide default headers */
+                    .header, .footer { display: none !important; }
+                    
+                    /* Running header on each page */
+                    @page {
+                        @top-center { content: element(header); }
+                        margin-top: 80px;
+                    }
                 </style>
 
-                <div class="page" t-attf-class="page {{ report_type == 'pdf' and 'o_report_landscape' or '' }}">
+                <div class="page-header text-small" id="header-template">
                     <t t-if="docs">
                         <t t-set="doc" t-value="docs[0]"/>
-                        <!-- Encabezado compacto -->
-                        <div class="text-small">
-                            <strong>Folio:</strong> <t t-esc="doc.folio_inicial"/>
-                            <br/>
-                            <strong><t t-esc="doc.company_id.name"/>:</strong> 
-                            <t t-esc="'LIBRO DE %s' % (libro.upper())"/>
-                            <br/>
+                        <div class="folio-box">
+                            Folio: <span class="folio-number" t-esc="doc.folio_inicial + current_page"/>
+                        </div>
+                        
+                        <div class="text-center">
+                            <h3><t t-esc="'LIBRO DE %s' % (libro.upper())"/></h3>
+                        </div>
+                        <div>
+                            <strong><t t-esc="doc.company_id.name"/></strong><br/>
                             <span><strong>Número de identificación tributaria:</strong> <t t-esc="doc.company_id.vat"/></span><br/>
                             <span><strong>Nombre comercial:</strong> <t t-esc="doc.company_id.name"/></span><br/>
                             <span><strong>Domicilio fiscal:</strong> <t t-esc="doc.company_id.street"/></span><br/>
                             <span><strong>Registro del:</strong> <t t-esc="doc.date_start"/> al <t t-esc="doc.date_end"/></span>
                         </div>
+                    </t>
+                </div>
 
-                        <!-- Tabla de facturas -->
+                <div class="page" t-attf-class="page {{ report_type == 'pdf' and 'o_report_landscape' or '' }}">
+                    <t t-if="docs">
+                        <t t-set="doc" t-value="docs[0]"/>
+                        <t t-set="current_page" t-value="0"/>
+                        
+                        <!-- We'll add extra space at top to accommodate the running header -->
+                        <div style="height: 60px;"></div>
+
+                        <!-- Tabla de facturas with controlled pagination -->
                         <t t-set="index" t-value="doc.folio_inicial"/>
                         <h4 style="margin-top: 15px;">Detalle de Facturas</h4>
-                        <table class="table table-sm table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Fecha</th>
-                                    <th>Serie</th>
-                                    <th>Número</th>
-                                    <th>NIT</th>
-                                    <th>Compañía</th>
-                                    <th class="text-right">Bienes</th>
-                                    <th class="text-right">Bienes Exento</th>
-                                    <th class="text-right">Servicios</th>
-                                    <th class="text-right">Servicios Exento</th>
-                                    <th class="text-right">Combustible</th>
-                                    <th class="text-right">Combustible Exento</th>
-                                    <th class="text-right">Importación</th>
-                                    <th class="text-right">Importación Exento</th>
-                                    <th class="text-right">Peq. Contribuyente</th>
-                                    <th class="text-right">IVA</th>
-                                    <th class="text-right">Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <t t-foreach="lines" t-as="line">
+                        
+                        <!-- Grouping data into pages -->
+                        <t t-set="lines_per_page" t-value="25"/>
+                        <t t-set="total_pages" t-value="max(1, int(len(lines) / lines_per_page) + (0 if len(lines) % lines_per_page == 0 else 1))"/>
+                        
+                        <t t-foreach="range(total_pages)" t-as="page_num">
+                            <t t-set="current_page" t-value="page_num"/>
+                            <t t-set="start_idx" t-value="page_num * lines_per_page"/>
+                            <t t-set="end_idx" t-value="min(start_idx + lines_per_page, len(lines))"/>
+                            <t t-set="page_lines" t-value="lines[start_idx:end_idx]"/>
+                            
+                            <!-- Only add page break after first page -->
+                            <div t-if="page_num > 0" class="page-break"></div>
+                            
+                            <table class="table table-sm table-bordered invoice-table">
+                                <thead>
                                     <tr>
-                                        <td><t t-esc="index"/></td>
-                                        <td><t t-esc="line.get('fecha')"/></td>
-                                        <td><t t-esc="line.get('serie')"/></td>
-                                        <td><t t-esc="line.get('numero')"/></td>
-                                        <td><t t-esc="line.get('nit')"/></td>
-                                        <td><t t-esc="line.get('compania')"/></td>
-                                        <td class="text-right"><t t-esc="'{:,.2f}'.format(line['resumen']['bienes'])"/></td>
-                                        <td class="text-right"><t t-esc="'{:,.2f}'.format(line['resumen']['bienes_exento'])"/></td>
-                                        <td class="text-right"><t t-esc="'{:,.2f}'.format(line['resumen']['servicios'])"/></td>
-                                        <td class="text-right"><t t-esc="'{:,.2f}'.format(line['resumen']['servicios_exento'])"/></td>
-                                        <td class="text-right"><t t-esc="'{:,.2f}'.format(line['resumen']['combustible'])"/></td>
-                                        <td class="text-right"><t t-esc="'{:,.2f}'.format(line['resumen']['combustible_exento'])"/></td>
-                                        <td class="text-right"><t t-esc="'{:,.2f}'.format(line['resumen']['importacion'])"/></td>
-                                        <td class="text-right"><t t-esc="'{:,.2f}'.format(line['resumen']['importacion_exento'])"/></td>
-                                        <td class="text-right"><t t-esc="'{:,.2f}'.format(line['resumen']['peq'])"/></td>
-                                        <td class="text-right"><t t-esc="'{:,.2f}'.format(line['resumen']['iva'])"/></td>
-                                        <td class="text-right"><t t-esc="'{:,.2f}'.format(line['resumen']['total'])"/></td>
+                                        <th>#</th>
+                                        <th>Fecha</th>
+                                        <th>Serie</th>
+                                        <th>Número</th>
+                                        <th>NIT</th>
+                                        <th>Compañía</th>
+                                        <th class="text-right">Bienes</th>
+                                        <th class="text-right">Bienes Exento</th>
+                                        <th class="text-right">Servicios</th>
+                                        <th class="text-right">Servicios Exento</th>
+                                        <th class="text-right">Combustible</th>
+                                        <th class="text-right">Combustible Exento</th>
+                                        <th class="text-right">Importación</th>
+                                        <th class="text-right">Importación Exento</th>
+                                        <th class="text-right">Peq. Contribuyente</th>
+                                        <th class="text-right">IVA</th>
+                                        <th class="text-right">Total</th>
                                     </tr>
-                                    <t t-set="index" t-value="index + 1"/>
-                                </t>
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="page_lines" t-as="line">
+                                        <tr>
+                                            <td><t t-esc="index"/></td>
+                                            <td><t t-esc="line.get('fecha')"/></td>
+                                            <td><t t-esc="line.get('serie')"/></td>
+                                            <td><t t-esc="line.get('numero')"/></td>
+                                            <td><t t-esc="line.get('nit')"/></td>
+                                            <td><t t-esc="line.get('compania')"/></td>
+                                            <td class="text-right"><t t-esc="'{:,.2f}'.format(line['resumen']['bienes'])"/></td>
+                                            <td class="text-right"><t t-esc="'{:,.2f}'.format(line['resumen']['bienes_exento'])"/></td>
+                                            <td class="text-right"><t t-esc="'{:,.2f}'.format(line['resumen']['servicios'])"/></td>
+                                            <td class="text-right"><t t-esc="'{:,.2f}'.format(line['resumen']['servicios_exento'])"/></td>
+                                            <td class="text-right"><t t-esc="'{:,.2f}'.format(line['resumen']['combustible'])"/></td>
+                                            <td class="text-right"><t t-esc="'{:,.2f}'.format(line['resumen']['combustible_exento'])"/></td>
+                                            <td class="text-right"><t t-esc="'{:,.2f}'.format(line['resumen']['importacion'])"/></td>
+                                            <td class="text-right"><t t-esc="'{:,.2f}'.format(line['resumen']['importacion_exento'])"/></td>
+                                            <td class="text-right"><t t-esc="'{:,.2f}'.format(line['resumen']['peq'])"/></td>
+                                            <td class="text-right"><t t-esc="'{:,.2f}'.format(line['resumen']['iva'])"/></td>
+                                            <td class="text-right"><t t-esc="'{:,.2f}'.format(line['resumen']['total'])"/></td>
+                                        </tr>
+                                        <t t-set="index" t-value="index + 1"/>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </t>
 
-                        <!-- Resumen final -->
+                        <!-- Resumen final on the last page -->
+                        <div class="page-break"></div>
+                        <t t-set="current_page" t-value="total_pages"/>
+                        
                         <h4 style="margin-top: 20px;">Resumen Global</h4>
                         <table class="summary-table table-bordered">
                             <thead>
