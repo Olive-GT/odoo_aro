@@ -49,7 +49,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <t t-foreach="data.get('facturas', [])" t-as="line">
+                            <t t-foreach="lines" t-as="line">
                                 <tr>
                                     <td><t t-esc="index"/></td>
                                     <td><t t-esc="line.get('fecha')"/></td>
@@ -95,10 +95,10 @@
                             <t t-foreach="categorias" t-as="cat">
                                 <tr>
                                     <td><t t-esc="cat.title()"/></td>
-                                    <td class="text-right"><t t-set="base" t-value="data['resumen_global'][cat]['base']"/><t t-esc="'{:,.2f}'.format(base)"/></td>
-                                    <td class="text-right"><t t-set="iva" t-value="data['resumen_global'][cat]['iva']"/><t t-esc="'{:,.2f}'.format(iva)"/></td>
-                                    <td class="text-right"><t t-set="exento" t-value="data['resumen_global'][cat]['exento']"/><t t-esc="'{:,.2f}'.format(exento)"/></td>
-                                    <td class="text-right"><t t-set="total" t-value="data['resumen_global'][cat]['total']"/><t t-esc="'{:,.2f}'.format(total)"/></td>
+                                    <td class="text-right"><t t-set="base" t-value="doc['resumen_global'][cat]['base']"/><t t-esc="'{:,.2f}'.format(base)"/></td>
+                                    <td class="text-right"><t t-set="iva" t-value="doc['resumen_global'][cat]['iva']"/><t t-esc="'{:,.2f}'.format(iva)"/></td>
+                                    <td class="text-right"><t t-set="exento" t-value="doc['resumen_global'][cat]['exento']"/><t t-esc="'{:,.2f}'.format(exento)"/></td>
+                                    <td class="text-right"><t t-set="total" t-value="doc['resumen_global'][cat]['total']"/><t t-esc="'{:,.2f}'.format(total)"/></td>
                                     <t t-set="total_base" t-value="total_base + base"/>
                                     <t t-set="total_iva" t-value="total_iva + iva"/>
                                     <t t-set="total_exento" t-value="total_exento + exento"/>
