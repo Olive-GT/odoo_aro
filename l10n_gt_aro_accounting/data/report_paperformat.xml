@@ -1,0 +1,13 @@
+<odoo>
+    <record id="paperformat_libros_horizontal" model="report.paperformat">
+        <field name="name">Libros Horizontal</field>
+        <field name="default" eval="False"/>
+        <field name="format">A4</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">10</field>
+        <field name="margin_bottom">10</field>
+        <field name="margin_left">10</field>
+        <field name="margin_right">10</field>
+        <field name="header_line" eval="False"/>
+    </record>
+</odoo>

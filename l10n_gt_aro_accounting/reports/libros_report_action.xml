@@ -9,6 +9,7 @@
         <field name="print_report_name">'Reporte_Fiscal_' + object.libro</field>
         <field name="binding_model_id" ref="model_reporte_libros_wizard"/>
         <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="l10n_gt_aro_accounting.paperformat_libros_horizontal"/>
     </record>
 
     <!-- Acción del reporte Excel -->

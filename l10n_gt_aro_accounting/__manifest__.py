@@ -20,6 +20,7 @@
         'views/reporte_libros_views.xml',
         'views/reporte_libros_templates.xml',
         'reports/libros_report_action.xml',
+        'data/report_paperformat.xml'
     ],
     'installable': True,
     'application': False,
