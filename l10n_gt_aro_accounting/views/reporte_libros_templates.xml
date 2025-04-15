@@ -57,8 +57,8 @@
                             Folio: <span t-esc="current_folio"/>
                         </div>
                         <div>
-                            <strong t-if="o.libro == 'compras'">Libro de compras y servicios recibidos</strong>
-                            <strong t-if="o.libro == 'ventas'">Libro de ventas y servicios prestados</strong><br/>
+                            <strong t-if="o.libro == 'compras'">LIBRO DE COMPRAS Y SERVICIOS RECIBIDOS</strong>
+                            <strong t-if="o.libro == 'ventas'">LIBRO DE VENTAS Y SERVICIOS PRESTADOS </strong><br/>
                             <strong><t t-esc="o.company_id.name"/></strong><br/>
                             <span><strong>Número de identificación tributaria:</strong> <t t-esc="o.company_id.vat"/></span><br/>
                             <span><strong>Nombre comercial:</strong> <t t-esc="o.company_id.name"/></span><br/>
