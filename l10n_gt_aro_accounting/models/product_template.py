@@ -5,5 +5,8 @@ class ProductTemplate(models.Model):
 
     type = fields.Selection(
         selection_add=[('combustible', 'Combustible'), ('importacion', 'Importación')],
-        ondelete={'combustible': 'set default'}
+        ondelete={
+            'combustible': 'set default',
+            'importacion': 'set default'
+            }
     )
