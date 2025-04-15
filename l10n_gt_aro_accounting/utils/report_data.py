@@ -23,6 +23,7 @@ class ReporteFiscalUtils(models.AbstractModel):
             'combustible': {'base': 0, 'iva': 0, 'exento': 0, 'total': 0},
             'importacion': {'base': 0, 'iva': 0, 'exento': 0, 'total': 0},
             'peq':         {'base': 0, 'iva': 0, 'exento': 0, 'total': 0},
+            'count': 0,
         }
 
         for move in facturas:
@@ -45,7 +46,6 @@ class ReporteFiscalUtils(models.AbstractModel):
                 'peq': 0,
                 'iva': 0,
                 'total': 0,
-                'count': 0,
             }
 
             # Si la factura está cancelada → todo en cero
