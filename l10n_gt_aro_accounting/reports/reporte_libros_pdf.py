@@ -13,6 +13,7 @@ class ReporteLibrosPdf(models.AbstractModel):
             'doc_model': 'reporte.libros.wizard',
             'docs': wizard,
             'lines': data.get('lines', []),
+            'summary': data.get('resumen_global', {}),
             'libro': data.get('libro', ''),
         }
 
