@@ -13,6 +13,12 @@ class ReporteLibrosWizard(models.TransientModel):
     journal_id = fields.Many2one('account.journal', string="Diario", required=True)
     tax_id = fields.Many2one('account.tax', string="Impuesto (IVA)", required=True)
     folio_inicial = fields.Integer(string="Folio Inicial", default=1)
+    company_id = fields.Many2one(
+        'res.company', string='Compañía',
+        default=lambda self: self.env.company,
+        required=True
+    )
+
     libro = fields.Selection([
         ('ventas', 'Libro de Ventas'),
         ('compras', 'Libro de Compras')
