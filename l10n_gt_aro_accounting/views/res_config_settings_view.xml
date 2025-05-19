@@ -6,8 +6,12 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='purchase_tax_id']" position="after">
                 <div class="row mt16">
-                    <label string="Cuenta ISR" for="isr_account_id" class="col-lg-3 o_light_label"/>
+                    <label string="Cuenta ISR Proveedores" for="isr_account_id" class="col-lg-3 o_light_label"/>
                     <field name="isr_account_id"/>
+                </div>
+                <div class="row mt16">
+                    <label string="Cuenta ISR Clientes" for="isr_account_client_id" class="col-lg-3 o_light_label"/>
+                    <field name="isr_account_client_id"/>
                 </div>
             </xpath>
         </field>
