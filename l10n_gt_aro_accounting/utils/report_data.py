@@ -1,4 +1,5 @@
 from odoo import models
+from odoo.tools.misc import formatLang
 
 
 class ReporteFiscalUtils(models.AbstractModel):
@@ -160,9 +161,10 @@ class ReporteFiscalUtils(models.AbstractModel):
             'resumen_global': global_summary
         }
 
+class ReportAccountMoveCompact(models.AbstractModel):
+    _name = 'report.l10n_gt_aro_accounting.report_account_move_compact'
+    _description = 'Reporte compacto de pólizas contables'
 
-class ReportHelpers(models.AbstractModel):
-    _name = 'report.l10n_gt_aro_accounting.report_account_move_compacto'
+    def format_amount(self, amount, currency_id=None):
+        return formatLang(self.env, amount, currency_obj=currency_id)
 
-    def format_amount(self, amount, currency):
-        return currency.round(amount) if currency else round(amount, 2)
