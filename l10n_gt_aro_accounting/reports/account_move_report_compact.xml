@@ -23,14 +23,14 @@
                                 <tr>
                                     <td><t t-esc="line.account_id.code"/></td>
                                     <td><t t-esc="line.account_id.name"/></td>
-                                    <td style="text-align:right;"><t t-esc="formatLang(line.debit, currency_obj=move.currency_id)"/></td>
-                                    <td style="text-align:right;"><t t-esc="formatLang(line.credit, currency_obj=move.currency_id)"/></td>
+                                    <td style="text-align:right;"><t t-esc="format_amount(line.debit, move.currency_id)"/></td>
+                                    <td style="text-align:right;"><t t-esc="format_amount(line.credit, move.currency_id)"/></td>
                                 </tr>
                             </t>
                             <tr>
                                 <td colspan="2"><strong>Total:</strong></td>
-                                <td style="text-align:right;"><t t-esc="formatLang(sum(line.debit for line in move.line_ids), currency_obj=move.currency_id)"/></td>
-                                <td style="text-align:right;"><t t-esc="formatLang(sum(line.credit for line in move.line_ids), currency_obj=move.currency_id)"/></td>
+                                <td style="text-align:right;"><t t-esc="format_amount(sum(line.debit for line in move.line_ids), move.currency_id)"/></td>
+                                <td style="text-align:right;"><t t-esc="format_amount(sum(line.credit for line in move.line_ids), move.currency_id)"/></td>
                             </tr>
                         </tbody>
                     </table>
