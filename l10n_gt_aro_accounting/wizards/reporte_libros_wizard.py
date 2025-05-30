@@ -1,6 +1,6 @@
 # wizards/reporte_libros_wizard.py
 from odoo import models, fields
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, UserError
 from datetime import datetime
 
 
@@ -54,7 +54,15 @@ class ReporteLibrosWizard(models.TransientModel):
         return report.report_action(self, data=report_data)
 
     def action_generar_excel(self):
-        return self.env.ref('l10n_gt_aro_accounting.reporte_libros_excel').report_action(self, data={
+        # Use direct search and report_action call instead of env.ref()
+        report = self.env['ir.actions.report'].search([
+            ('report_name', '=', 'l10n_gt_aro_accounting.reporte_libros_excel')
+        ], limit=1)
+        
+        if not report:
+            raise UserError('No se encontró el reporte. Por favor, actualice el módulo.')
+            
+        return report.report_action(self, data={
             'date_start': self.date_start,
             'date_end': self.date_end,
             'journal_id': self.journal_id.id,
