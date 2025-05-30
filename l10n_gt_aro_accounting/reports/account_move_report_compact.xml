@@ -6,8 +6,8 @@
                     <h4 style="margin-bottom: 5px;"><t t-esc="move.company_id.name"/>: Partida</h4>
                     <p>
                         <strong>Partida:</strong> <t t-esc="move.name"/>
-                        &nbsp;&nbsp; <strong>Ref:</strong> <t t-esc="move.ref or ''"/>
-                        &nbsp;&nbsp; <strong>Fecha:</strong> <t t-esc="move.date"/>
+                        <span style="margin-left: 20px;"><strong>Ref:</strong> <t t-esc="move.ref or ''"/></span>
+                        <span style="margin-left: 20px;"><strong>Fecha:</strong> <t t-esc="move.date"/></span>
                     </p>
                     <table class="table table-sm" style="font-size: 10px; margin-bottom: 10px;">
                         <thead>
