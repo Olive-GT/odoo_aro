@@ -3,38 +3,45 @@
         <t t-call="web.html_container">
             <t t-call="web.basic_layout">
                 <style>
+                    .o_report_layout_standard > header,
+                    .o_report_layout_standard > footer,
+                    .o_standard_footer {
+                        display: none !important;
+                    }
+
                     .table th, .table td {
                         padding: 4px 6px !important;
                         font-size: 10px;
                         vertical-align: top;
                     }
+
                     .entry-header {
-                        border-bottom: 1px solid #888;
-                        margin-bottom: 8px;
-                        padding-bottom: 5px;
+                        margin-bottom: 6px;
+                        font-size: 11px;
+                        border-bottom: 1px solid #ccc;
+                        padding-bottom: 4px;
                     }
+
                     .entry-table tr {
                         page-break-inside: avoid;
                     }
-                    .page {
-                        page-break-after: always;
-                        padding: 15px 25px;
+
+                    .entry-block {
+                        margin-bottom: 20px;
                     }
                 </style>
 
                 <t t-foreach="docs" t-as="move">
-                    <div class="page">
-                        <!-- Encabezado del movimiento -->
+                    <div class="entry-block">
+                        <!-- Encabezado de la partida -->
                         <div class="entry-header">
-                            <h4 style="margin: 0;"><t t-esc="move.company_id.name"/></h4>
-                            <p style="margin: 0;">
-                                <strong>Partida:</strong> <t t-esc="move.name"/>
-                                <span style="margin-left: 20px;"><strong>Ref:</strong> <t t-esc="move.ref or ''"/></span>
-                                <span style="margin-left: 20px;"><strong>Fecha:</strong> <t t-esc="move.date"/></span>
-                            </p>
+                            <strong><t t-esc="move.company_id.name"/></strong><br/>
+                            <span><strong>Partida:</strong> <t t-esc="move.name"/></span>
+                            <span style="margin-left: 20px;"><strong>Ref:</strong> <t t-esc="move.ref or ''"/></span>
+                            <span style="margin-left: 20px;"><strong>Fecha:</strong> <t t-esc="move.date"/></span>
                         </div>
 
-                        <!-- Tabla de líneas contables -->
+                        <!-- Tabla de cuentas -->
                         <table class="table table-sm table-bordered entry-table" style="width: 100%;">
                             <thead>
                                 <tr>
@@ -59,12 +66,8 @@
                                 </t>
                                 <tr>
                                     <td colspan="2" style="text-align: right;"><strong>Total:</strong></td>
-                                    <td style="text-align: right;">
-                                        <strong><t t-esc="format_amount(sum(line.debit for line in move.line_ids), move.currency_id)"/></strong>
-                                    </td>
-                                    <td style="text-align: right;">
-                                        <strong><t t-esc="format_amount(sum(line.credit for line in move.line_ids), move.currency_id)"/></strong>
-                                    </td>
+                                    <td style="text-align: right;"><strong><t t-esc="format_amount(sum(line.debit for line in move.line_ids), move.currency_id)"/></strong></td>
+                                    <td style="text-align: right;"><strong><t t-esc="format_amount(sum(line.credit for line in move.line_ids), move.currency_id)"/></strong></td>
                                 </tr>
                             </tbody>
                         </table>
