@@ -159,3 +159,10 @@ class ReporteFiscalUtils(models.AbstractModel):
             'facturas': data,
             'resumen_global': global_summary
         }
+
+
+class ReportHelpers(models.AbstractModel):
+    _name = 'report.l10n_gt_aro_accounting.report_account_move_compacto'
+
+    def format_amount(self, amount, currency):
+        return currency.round(amount) if currency else round(amount, 2)

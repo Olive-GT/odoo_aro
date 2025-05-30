@@ -21,4 +21,16 @@
         file="Reporte Fiscal Excel"
         print_report_name="'Reporte_Fiscal_' + object.libro"
     />
+
+    <report
+        id="action_report_account_move_compact"
+        model="account.move"
+        string="Pólizas contables compactas"
+        report_type="qweb-pdf"
+        name="l10n_gt_aro_accounting.report_account_move_compacto"
+        file="l10n_gt_aro_accounting.report_account_move_compacto"
+        print_report_name="'Poliza - %s' % (object.name)"
+        groups="account.group_account_user"
+    />
+
 </odoo>

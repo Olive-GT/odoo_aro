@@ -19,6 +19,7 @@
         'views/res_config_settings_view.xml',
         'views/reporte_libros_views.xml',
         'views/reporte_libros_templates.xml',
+        'reports/account_move_report_compact.xml',
         'reports/libros_report_action.xml',
     ],
     'installable': True,
