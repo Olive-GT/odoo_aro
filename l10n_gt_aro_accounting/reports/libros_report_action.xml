@@ -12,16 +12,18 @@
     </record>
 
     <!-- Acción del reporte Excel -->
-    <report
-        id="reporte_libros_excel"
-        string="Reporte Libros Excel"
-        model="reporte.libros.wizard"
-        report_type="xlsx"
-        name="report.l10n_gt_aro_accounting.reporte_libros_excel"
-        file="Reporte Fiscal Excel"
-        print_report_name="'Reporte_Fiscal_' + object.libro"
-    />
+    <record id="action_report_libros_excel" model="ir.actions.report">
+        <field name="name">Reporte Libros Excel</field>
+        <field name="model">reporte.libros.wizard</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">l10n_gt_aro_accounting.reporte_libros_excel_template</field>
+        <field name="report_file">l10n_gt_aro_accounting.reporte_libros_excel_template</field>
+        <field name="print_report_name">'Reporte_Fiscal_' + object.libro</field>
+        <field name="binding_model_id" ref="model_reporte_libros_wizard"/>
+        <field name="binding_type">report</field>
+    </record>
 
+    <!-- Acción del reporte de partidas -->
     <record id="action_report_account_move_compact" model="ir.actions.report">
         <field name="name">Partidas</field>
         <field name="model">account.move</field>
