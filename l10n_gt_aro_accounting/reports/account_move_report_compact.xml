@@ -1,40 +1,75 @@
 <odoo>
     <template id="report_account_move_compact">
         <t t-call="web.html_container">
-            <t t-foreach="docs" t-as="move">
-                <div class="page" style="padding: 10px 20px;">
-                    <h4 style="margin-bottom: 5px;"><t t-esc="move.company_id.name"/>: Partida</h4>
-                    <p>
-                        <strong>Partida:</strong> <t t-esc="move.name"/>
-                        <span style="margin-left: 20px;"><strong>Ref:</strong> <t t-esc="move.ref or ''"/></span>
-                        <span style="margin-left: 20px;"><strong>Fecha:</strong> <t t-esc="move.date"/></span>
-                    </p>
-                    <table class="table table-sm" style="font-size: 10px; margin-bottom: 10px;">
-                        <thead>
-                            <tr>
-                                <th>Código</th>
-                                <th>Cuenta</th>
-                                <th style="text-align:right;">Debe</th>
-                                <th style="text-align:right;">Haber</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <t t-foreach="move.line_ids" t-as="line">
+            <t t-call="web.basic_layout">
+                <style>
+                    .table th, .table td {
+                        padding: 4px 6px !important;
+                        font-size: 10px;
+                        vertical-align: top;
+                    }
+                    .entry-header {
+                        border-bottom: 1px solid #888;
+                        margin-bottom: 8px;
+                        padding-bottom: 5px;
+                    }
+                    .entry-table tr {
+                        page-break-inside: avoid;
+                    }
+                    .page {
+                        page-break-after: always;
+                        padding: 15px 25px;
+                    }
+                </style>
+
+                <t t-foreach="docs" t-as="move">
+                    <div class="page">
+                        <!-- Encabezado del movimiento -->
+                        <div class="entry-header">
+                            <h4 style="margin: 0;"><t t-esc="move.company_id.name"/></h4>
+                            <p style="margin: 0;">
+                                <strong>Partida:</strong> <t t-esc="move.name"/>
+                                <span style="margin-left: 20px;"><strong>Ref:</strong> <t t-esc="move.ref or ''"/></span>
+                                <span style="margin-left: 20px;"><strong>Fecha:</strong> <t t-esc="move.date"/></span>
+                            </p>
+                        </div>
+
+                        <!-- Tabla de líneas contables -->
+                        <table class="table table-sm table-bordered entry-table" style="width: 100%;">
+                            <thead>
                                 <tr>
-                                    <td><t t-esc="line.account_id.code"/></td>
-                                    <td><t t-esc="line.account_id.name"/></td>
-                                    <td style="text-align:right;"><t t-esc="format_amount(line.debit, move.currency_id)"/></td>
-                                    <td style="text-align:right;"><t t-esc="format_amount(line.credit, move.currency_id)"/></td>
+                                    <th style="width:10%;">Código</th>
+                                    <th>Cuenta</th>
+                                    <th style="width:20%; text-align: right;">Debe</th>
+                                    <th style="width:20%; text-align: right;">Haber</th>
                                 </tr>
-                            </t>
-                            <tr>
-                                <td colspan="2"><strong>Total:</strong></td>
-                                <td style="text-align:right;"><t t-esc="format_amount(sum(line.debit for line in move.line_ids), move.currency_id)"/></td>
-                                <td style="text-align:right;"><t t-esc="format_amount(sum(line.credit for line in move.line_ids), move.currency_id)"/></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="move.line_ids" t-as="line">
+                                    <tr>
+                                        <td><t t-esc="line.account_id.code"/></td>
+                                        <td><t t-esc="line.account_id.name"/></td>
+                                        <td style="text-align: right;">
+                                            <t t-esc="format_amount(line.debit, move.currency_id)"/>
+                                        </td>
+                                        <td style="text-align: right;">
+                                            <t t-esc="format_amount(line.credit, move.currency_id)"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                                <tr>
+                                    <td colspan="2" style="text-align: right;"><strong>Total:</strong></td>
+                                    <td style="text-align: right;">
+                                        <strong><t t-esc="format_amount(sum(line.debit for line in move.line_ids), move.currency_id)"/></strong>
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <strong><t t-esc="format_amount(sum(line.credit for line in move.line_ids), move.currency_id)"/></strong>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
             </t>
         </t>
     </template>
