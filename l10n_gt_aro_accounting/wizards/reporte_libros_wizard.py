@@ -54,6 +54,24 @@ class ReporteLibrosWizard(models.TransientModel):
         return report.report_action(self, data=report_data)
 
     def action_generar_excel(self):
+        data = self.env['reporte.fiscal.utils'].get_factura_data(
+            self.date_start, self.date_end, self.journal_id, self.tax_id, self.libro
+        )
+        
+        # Build the complete data dictionary with all needed values
+        report_data = {
+            'lines': data['facturas'],
+            'summary': data['resumen_global'],
+            'folio_inicial': self.folio_inicial,
+            'libro': self.libro,
+            'date_start': self.date_start,
+            'date_end': self.date_end,
+            'journal_name': self.journal_id.display_name,
+            'tax_id': self.tax_id.id,
+            'doc_ids': self.ids,
+            'doc_model': 'reporte.libros.wizard',
+        }
+        
         # Use direct search and report_action call instead of env.ref()
         report = self.env['ir.actions.report'].search([
             ('report_name', '=', 'l10n_gt_aro_accounting.reporte_libros_excel')
@@ -62,11 +80,4 @@ class ReporteLibrosWizard(models.TransientModel):
         if not report:
             raise UserError('No se encontró el reporte. Por favor, actualice el módulo.')
             
-        return report.report_action(self, data={
-            'date_start': self.date_start,
-            'date_end': self.date_end,
-            'journal_id': self.journal_id.id,
-            'tax_id': self.tax_id.id,
-            'folio_inicial': self.folio_inicial,
-            'libro': self.libro,
-        })
+        return report.report_action(self, data=report_data)
