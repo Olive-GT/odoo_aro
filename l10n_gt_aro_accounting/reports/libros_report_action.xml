@@ -22,15 +22,17 @@
         print_report_name="'Reporte_Fiscal_' + object.libro"
     />
 
-    <report
-        id="action_report_account_move_compact"
-        model="account.move"
-        string="Pólizas contables compactas"
-        report_type="qweb-pdf"
-        name="l10n_gt_aro_accounting.report_account_move_compact"
-        file="l10n_gt_aro_accounting.report_account_move_compact"
-        print_report_name="'Poliza - %s' % (object.name)"
-        groups="account.group_account_user"
-    />
+    <record id="action_report_account_move_compact" model="ir.actions.report">
+        <field name="name">Partidas</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">l10n_gt_aro_accounting.report_account_move_compact</field>
+        <field name="report_file">l10n_gt_aro_accounting.report_account_move_compact</field>
+        <field name="print_report_name">'Póliza - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_type">report</field>
+        <field name="usage">default</field> <!-- ⭐️ ESTE ES EL CAMPO CLAVE -->
+    </record>
+
 
 </odoo>
