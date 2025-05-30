@@ -1,17 +1,20 @@
 <odoo>
     <template id="report_account_move_compact">
         <t t-call="web.html_container">
-            <t t-call="web.minimal_layout">
+            <t t-call="web.basic_layout">
                 <style>
+                    .o_report_layout_standard > header, 
+                    .o_report_layout_standard > footer,
+                    .o_report_layout_background > header,
+                    .o_report_layout_background > footer,
+                    .o_standard_footer {
+                        display: none !important;
+                    }
+
                     .table th, .table td {
                         padding: 4px 6px !important;
                         font-size: 10px;
                         vertical-align: top;
-                    }
-
-                    .entry-block {
-                        margin-bottom: 20px;
-                        page-break-inside: avoid;
                     }
 
                     .entry-header {
@@ -19,37 +22,28 @@
                         font-size: 11px;
                         border-bottom: 1px solid #ccc;
                         padding-bottom: 4px;
-                        font-weight: bold;
                     }
 
                     .entry-table tr {
                         page-break-inside: avoid;
                     }
 
-                    .company-name {
-                        font-size: 12px;
-                        font-weight: bold;
-                        margin-bottom: 2px;
-                    }
-
-                    .meta-info {
-                        font-size: 10px;
-                        margin-bottom: 4px;
+                    .entry-block {
+                        margin-bottom: 20px;
                     }
                 </style>
 
                 <t t-foreach="docs" t-as="move">
                     <div class="entry-block">
-                        <div class="entry-header company-name">
-                            <t t-esc="move.company_id.name"/>
-                        </div>
-                        <div class="meta-info">
-                            <strong>Partida:</strong> <t t-esc="move.name"/>
-                            <span style="margin-left: 20px;"><strong>Ref:</strong> <t t-esc="move.ref or ''"/></span>
-                            <span style="margin-left: 20px;"><strong>Fecha:</strong> <t t-esc="move.date"/></span>
-                        </div>
-
+                        <!-- Tabla de cuentas -->
                         <table class="table table-sm table-bordered entry-table" style="width: 100%;">
+                            <!-- Encabezado de la partida -->
+                            <div class="entry-header">
+                                <strong><t t-esc="move.company_id.name"/></strong><br/>
+                                <span><strong>Partida:</strong> <t t-esc="move.name"/></span>
+                                <span style="margin-left: 20px;"><strong>Ref:</strong> <t t-esc="move.ref or ''"/></span>
+                                <span style="margin-left: 20px;"><strong>Fecha:</strong> <t t-esc="move.date"/></span>
+                            </div>
                             <thead>
                                 <tr>
                                     <th style="width:10%;">Código</th>
