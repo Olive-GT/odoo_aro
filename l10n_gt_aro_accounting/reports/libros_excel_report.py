@@ -13,17 +13,15 @@ class ReporteLibrosExcel(models.AbstractModel):
     _description = 'Reporte Libros Excel'
 
     def generate_xlsx_report(self, workbook, data, wizard):
-        # Get the data from the util method
-        report_data = self.env['reporte.fiscal.utils'].get_factura_data(
-            data['date_start'],
-            data['date_end'],
-            self.env['account.journal'].browse(data['journal_id']),
-            self.env['account.tax'].browse(data['tax_id']),
-            data['libro']
-        )
-        
-        lines = report_data['facturas']
-        summary = report_data['resumen_global']
+        lines = data['lines']
+        libro = data['libro']
+        date_start = data['date_start']
+        date_end = data['date_end']
+        journal_name = data['journal_name']
+        tax_id = data['tax_id']
+        doc_ids = data['doc_ids']
+        doc_model = data['doc_model']
+        summary = data['summary']
         folio_inicial = data.get('folio_inicial', 1)
         
         # Get company data
