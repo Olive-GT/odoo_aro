@@ -14,7 +14,6 @@
                             <tr>
                                 <th>Código</th>
                                 <th>Cuenta</th>
-                                <th>Analítica</th>
                                 <th style="text-align:right;">Debe</th>
                                 <th style="text-align:right;">Haber</th>
                             </tr>
@@ -24,13 +23,12 @@
                                 <tr>
                                     <td><t t-esc="line.account_id.code"/></td>
                                     <td><t t-esc="line.account_id.name"/></td>
-                                    <td><t t-esc="line.analytic_distribution.name or ''"/></td>
                                     <td style="text-align:right;"><t t-esc="format_amount(line.debit, move.currency_id)"/></td>
                                     <td style="text-align:right;"><t t-esc="format_amount(line.credit, move.currency_id)"/></td>
                                 </tr>
                             </t>
                             <tr>
-                                <td colspan="3"><strong>Total:</strong></td>
+                                <td colspan="2"><strong>Total:</strong></td>
                                 <td style="text-align:right;"><t t-esc="format_amount(sum(line.debit for line in move.line_ids), move.currency_id)"/></td>
                                 <td style="text-align:right;"><t t-esc="format_amount(sum(line.credit for line in move.line_ids), move.currency_id)"/></td>
                             </tr>
