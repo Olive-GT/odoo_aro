@@ -165,6 +165,12 @@ class ReportAccountMoveCompact(models.AbstractModel):
     _name = 'report.l10n_gt_aro_accounting.report_account_move_compact'
     _description = 'Reporte compacto de pólizas contables'
 
-    def format_amount(self, amount, currency_id=None):
-        return formatLang(self.env, amount, currency_obj=currency_id)
+    def _get_report_values(self, docids, data=None):
+        docs = self.env['account.move'].browse(docids)
+        return {
+            'doc_ids': docids,
+            'doc_model': 'account.move',
+            'docs': docs,
+            'format_amount': lambda amount, currency: formatLang(self.env, amount, currency_obj=currency),
+        }
 
