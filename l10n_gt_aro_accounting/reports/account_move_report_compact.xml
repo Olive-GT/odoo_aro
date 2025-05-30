@@ -23,8 +23,8 @@
                                 <tr>
                                     <td><t t-esc="line.account_id.code"/></td>
                                     <td><t t-esc="line.account_id.name"/></td>
-                                    <td style="text-align:right;"><t t-esc="formatLang(line.debit, currency_obj=move.currency_id)"/>
-                                    <td style="text-align:right;"><t t-esc="formatLang(line.credit, currency_obj=move.currency_id)"/>
+                                    <td style="text-align:right;"><t t-esc="formatLang(line.debit, currency_obj=move.currency_id)"/></td>
+                                    <td style="text-align:right;"><t t-esc="formatLang(line.credit, currency_obj=move.currency_id)"/></td>
                                 </tr>
                             </t>
                             <tr>
