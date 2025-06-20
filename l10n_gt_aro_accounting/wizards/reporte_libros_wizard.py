@@ -38,6 +38,7 @@ class ReporteLibrosWizard(models.TransientModel):
             'date_start': self.date_start,
             'date_end': self.date_end,
             'journal_name': self.journal_id.display_name,
+            'establishment_name': self.journal_id.establishment_name or '',
             'tax_id': self.tax_id.id,
             'doc_ids': self.ids,
             'doc_model': 'reporte.libros.wizard',

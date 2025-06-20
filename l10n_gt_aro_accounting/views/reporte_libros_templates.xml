@@ -61,7 +61,7 @@
                             <strong t-if="o.libro == 'ventas'">LIBRO DE VENTAS Y SERVICIOS PRESTADOS</strong><br/>
                             <strong><t t-esc="o.company_id.name"/></strong><br/>
                             <span><strong>Número de identificación tributaria:</strong> <t t-esc="o.company_id.vat"/></span><br/>
-                            <span><strong>Nombre comercial:</strong> <t t-esc="o.company_id.name"/></span><br/>
+                            <span><strong>Nombre comercial:</strong> <t t-esc="o.establishment_name"/></span><br/>
                             <span><strong>Domicilio fiscal:</strong> <t t-esc="o.company_id.street"/></span><br/>
                             <span><strong>Registro del:</strong> <t t-esc="o.date_start"/> al <t t-esc="o.date_end"/></span>
                         </div>
