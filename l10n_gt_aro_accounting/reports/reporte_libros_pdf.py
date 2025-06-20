@@ -15,5 +15,6 @@ class ReporteLibrosPdf(models.AbstractModel):
             'lines': data.get('lines', []),
             'summary': data.get('summary', {}),
             'libro': data.get('libro', ''),
+            'establishment_name': data.get('establishment_name', ''),
         }
 
