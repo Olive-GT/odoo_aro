@@ -58,9 +58,13 @@
                             Folio: <span t-esc="current_folio"/>
                         </div>
                         <div>
-                            <p>Valor de tipo_libro: <t t-esc="repr(tipo_libro)"/></p>
-                            <strong t-if="tipo_libro == 'compras'">LIBRO DE COMPRAS Y SERVICIOS RECIBIDOS</strong>
-                            <strong t-if="tipo_libro == 'ventas'">LIBRO DE VENTAS Y SERVICIOS PRESTADOS</strong>
+                            <t t-if="tipo_libro == 'compras'">
+                                <strong>LIBRO DE COMPRAS Y SERVICIOS RECIBIDOS</strong>
+                            </t>
+                            <t t-else="">
+                                <strong>LIBRO DE VENTAS Y SERVICIOS PRESTADOS</strong>
+                            </t>
+                            <br/>
                             <strong><t t-esc="o.company_id.name"/></strong><br/>
                             <span><strong>Número de identificación tributaria:</strong> <t t-esc="o.company_id.vat"/></span><br/>
                             <span><strong>Nombre comercial:</strong> <t t-esc="o.company_id.name"/></span><br/>
