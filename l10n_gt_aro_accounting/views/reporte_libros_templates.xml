@@ -128,8 +128,8 @@
                                     <td class="text-right"><strong><t t-esc="'{:,.2f}'.format(summary.get('importacion', {}).get('base', 0))"/></strong></td>
                                     <td class="text-right"><strong><t t-esc="'{:,.2f}'.format(summary.get('importacion', {}).get('exento', 0))"/></strong></td>
                                     <td class="text-right"><strong><t t-esc="'{:,.2f}'.format(summary.get('peq', {}).get('base', 0))"/></strong></td>
-                                    <td class="text-right"><strong><t t-esc="'{:,.2f}'.format(summary.get('iva_total', total_iva))"/></strong></td>
-                                    <td class="text-right"><strong><t t-esc="'{:,.2f}'.format(summary.get('total_general', total_total))"/></strong></td>
+                                    <td class="text-right"><strong><t t-esc="'{:,.2f}'.format(total_iva)"/></strong></td>
+                                    <td class="text-right"><strong><t t-esc="'{:,.2f}'.format(total_total)"/></strong></td>
                                 </tr>
                             </t>
                         </tbody>
