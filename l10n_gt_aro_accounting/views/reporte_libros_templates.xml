@@ -115,6 +115,23 @@
                                 </tr>
                                 <t t-set="index" t-value="index + 1"/>
                             </t>
+                            <!-- Fila de totales al final del último chunk -->
+                            <t t-if="chunks.index(chunk) == len(chunks) - 1">
+                                <tr>
+                                    <td colspan="7"><strong>Totales</strong></td>
+                                    <td class="text-right"><strong><t t-esc="'{:,.2f}'.format(summary.get('bienes', {}).get('base', 0))"/></strong></td>
+                                    <td class="text-right"><strong><t t-esc="'{:,.2f}'.format(summary.get('bienes', {}).get('exento', 0))"/></strong></td>
+                                    <td class="text-right"><strong><t t-esc="'{:,.2f}'.format(summary.get('servicios', {}).get('base', 0))"/></strong></td>
+                                    <td class="text-right"><strong><t t-esc="'{:,.2f}'.format(summary.get('servicios', {}).get('exento', 0))"/></strong></td>
+                                    <td class="text-right"><strong><t t-esc="'{:,.2f}'.format(summary.get('combustible', {}).get('base', 0))"/></strong></td>
+                                    <td class="text-right"><strong><t t-esc="'{:,.2f}'.format(summary.get('combustible', {}).get('exento', 0))"/></strong></td>
+                                    <td class="text-right"><strong><t t-esc="'{:,.2f}'.format(summary.get('importacion', {}).get('base', 0))"/></strong></td>
+                                    <td class="text-right"><strong><t t-esc="'{:,.2f}'.format(summary.get('importacion', {}).get('exento', 0))"/></strong></td>
+                                    <td class="text-right"><strong><t t-esc="'{:,.2f}'.format(summary.get('peq', {}).get('base', 0))"/></strong></td>
+                                    <td class="text-right"><strong><t t-esc="'{:,.2f}'.format(summary.get('iva_total', total_iva))"/></strong></td>
+                                    <td class="text-right"><strong><t t-esc="'{:,.2f}'.format(summary.get('total_general', total_total))"/></strong></td>
+                                </tr>
+                            </t>
                         </tbody>
                     </table>
                     
