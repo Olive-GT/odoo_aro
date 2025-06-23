@@ -115,7 +115,10 @@
                                 </tr>
                                 <t t-set="index" t-value="index + 1"/>
                             </t>
-                            <!-- Fila de totales al final del último chunk -->
+                            <!-- Calcular IVA total y Total general -->
+                            <t t-set="iva_total" t-value="summary.get('bienes', {}).get('iva', 0) + summary.get('servicios', {}).get('iva', 0) + summary.get('combustible', {}).get('iva', 0) + summary.get('importacion', {}).get('iva', 0) + summary.get('peq', {}).get('iva', 0)"/>
+                            <t t-set="total_general" t-value="summary.get('bienes', {}).get('total', 0) + summary.get('servicios', {}).get('total', 0) + summary.get('combustible', {}).get('total', 0) + summary.get('importacion', {}).get('total', 0) + summary.get('peq', {}).get('total', 0)"/>
+
                             <t t-if="chunks.index(chunk) == len(chunks) - 1">
                                 <tr>
                                     <td colspan="7"><strong>Totales</strong></td>
@@ -128,8 +131,8 @@
                                     <td class="text-right"><strong><t t-esc="'{:,.2f}'.format(summary.get('importacion', {}).get('base', 0))"/></strong></td>
                                     <td class="text-right"><strong><t t-esc="'{:,.2f}'.format(summary.get('importacion', {}).get('exento', 0))"/></strong></td>
                                     <td class="text-right"><strong><t t-esc="'{:,.2f}'.format(summary.get('peq', {}).get('base', 0))"/></strong></td>
-                                    <td class="text-right"><strong><t t-esc="'{:,.2f}'.format(total_iva)"/></strong></td>
-                                    <td class="text-right"><strong><t t-esc="'{:,.2f}'.format(total_total)"/></strong></td>
+                                    <td class="text-right"><strong><t t-esc="'{:,.2f}'.format(iva_total)"/></strong></td>
+                                    <td class="text-right"><strong><t t-esc="'{:,.2f}'.format(total_general)"/></strong></td>
                                 </tr>
                             </t>
                         </tbody>
