@@ -55,7 +55,7 @@ class ReporteFiscalUtils(models.AbstractModel):
             if move.state == 'cancel':
                 data.append({
                     'tipo': move.tipo_dte,
-                    'fecha': move.date.strftime('%d/%m/%Y') if move.date else '',
+                    'fecha': move.invoice_date.strftime('%d/%m/%Y') if move.invoice_date else '',
                     'serie': move.serie or '',
                     'numero': move.numero or '',
                     'nit': nit,
@@ -76,7 +76,7 @@ class ReporteFiscalUtils(models.AbstractModel):
 
                 data.append({
                     'tipo': move.tipo_dte,
-                    'fecha': move.date.strftime('%d/%m/%Y') if move.date else '',
+                    'fecha': move.invoice_date.strftime('%d/%m/%Y') if move.invoice_date else '',
                     'serie': move.serie or '',
                     'numero': move.numero or '',
                     'nit': nit,
@@ -146,7 +146,7 @@ class ReporteFiscalUtils(models.AbstractModel):
 
             data.append({
                 'tipo': move.tipo_dte,
-                'fecha': move.date.strftime('%d/%m/%Y') if move.date else '',
+                'fecha': move.invoice_date.strftime('%d/%m/%Y') if move.invoice_date else '',
                 'serie': move.serie or '',
                 'numero': move.numero or '',
                 'nit': nit,
