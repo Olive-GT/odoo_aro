@@ -8,14 +8,14 @@ class ReporteFiscalUtils(models.AbstractModel):
 
     def get_factura_data(self, date_start, date_end, journal_id, tax_id, libro):
         domain = [
-            ('invoice_date', '>=', date_start),
-            ('invoice_date', '<=', date_end),
+            ('date', '>=', date_start),
+            ('date', '<=', date_end),
             ('journal_id', '=', journal_id.id),
             ('state', 'in', ['posted', 'cancel']),
             ('move_type', 'in', ['out_invoice', 'in_invoice', 'out_refund', 'in_refund'])
         ]
 
-        facturas = self.env['account.move'].search(domain, order='invoice_date, name')
+        facturas = self.env['account.move'].search(domain, order='date, name')
         data = []
 
         global_summary = {
@@ -55,7 +55,7 @@ class ReporteFiscalUtils(models.AbstractModel):
             if move.state == 'cancel':
                 data.append({
                     'tipo': move.tipo_dte,
-                    'fecha': move.invoice_date.strftime('%d/%m/%Y') if move.invoice_date else '',
+                    'fecha': move.date.strftime('%d/%m/%Y') if move.date else '',
                     'serie': move.serie or '',
                     'numero': move.numero or '',
                     'nit': nit,
@@ -76,7 +76,7 @@ class ReporteFiscalUtils(models.AbstractModel):
 
                 data.append({
                     'tipo': move.tipo_dte,
-                    'fecha': move.invoice_date.strftime('%d/%m/%Y') if move.invoice_date else '',
+                    'fecha': move.date.strftime('%d/%m/%Y') if move.date else '',
                     'serie': move.serie or '',
                     'numero': move.numero or '',
                     'nit': nit,
@@ -146,7 +146,7 @@ class ReporteFiscalUtils(models.AbstractModel):
 
             data.append({
                 'tipo': move.tipo_dte,
-                'fecha': move.invoice_date.strftime('%d/%m/%Y') if move.invoice_date else '',
+                'fecha': move.date.strftime('%d/%m/%Y') if move.date else '',
                 'serie': move.serie or '',
                 'numero': move.numero or '',
                 'nit': nit,
