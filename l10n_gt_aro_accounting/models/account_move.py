@@ -20,30 +20,37 @@ class AccountMove(models.Model):
     @api.onchange('aplica_isr', 'invoice_line_ids')
     def _onchange_aplica_isr(self):
         for move in self:
-            move.invoice_line_ids = move.invoice_line_ids.filtered(lambda l: l.name != 'ISR')
-            if move.aplica_isr:
-                if move.amount_untaxed <= 2500:
-                    raise ValidationError("No se puede aplicar ISR si el total es menor a Q2,500.")
-                isr = move._calcular_isr(move.amount_untaxed)
-                
-                # Determinar qué cuenta usar basado en el tipo de documento
-                if move.move_type in ('in_invoice', 'in_refund'):
-                    param_name = 'contabilidad_custom.isr_account_id'
-                else:  # out_invoice, out_refund
-                    param_name = 'contabilidad_custom.isr_account_client_id'
-                
-                account_id = self.env['ir.config_parameter'].sudo().get_param(param_name)
-                if not account_id:
-                    tipo = "proveedores" if move.move_type in ('in_invoice', 'in_refund') else "clientes"
-                    raise ValidationError(f"Debes configurar la cuenta contable para ISR de {tipo} en Ajustes → Contabilidad.")
-                account = self.env['account.account'].browse(int(account_id))
-                
-                move.invoice_line_ids += self.env['account.move.line'].new({
-                    'name': 'ISR',
-                    'quantity': 1,
-                    'price_unit': -isr,
-                    'account_id': account.id,
-                })
+            isr_lines = move.invoice_line_ids.filtered(lambda l: l.name == 'ISR')
+
+            if not move.aplica_isr:
+                move.invoice_line_ids = move.invoice_line_ids - isr_lines
+                continue
+
+            if isr_lines:
+                continue
+
+            if move.amount_untaxed <= 2500:
+                raise ValidationError("No se puede aplicar ISR si el total es menor a Q2,500.")
+            isr = move._calcular_isr(move.amount_untaxed)
+
+            # Determinar qué cuenta usar basado en el tipo de documento
+            if move.move_type in ('in_invoice', 'in_refund'):
+                param_name = 'contabilidad_custom.isr_account_id'
+            else:  # out_invoice, out_refund
+                param_name = 'contabilidad_custom.isr_account_client_id'
+
+            account_id = self.env['ir.config_parameter'].sudo().get_param(param_name)
+            if not account_id:
+                tipo = "proveedores" if move.move_type in ('in_invoice', 'in_refund') else "clientes"
+                raise ValidationError(f"Debes configurar la cuenta contable para ISR de {tipo} en Ajustes → Contabilidad.")
+            account = self.env['account.account'].browse(int(account_id))
+
+            move.invoice_line_ids += self.env['account.move.line'].new({
+                'name': 'ISR',
+                'quantity': 1,
+                'price_unit': -isr,
+                'account_id': account.id,
+            })
 
     def _calcular_isr(self, total):
         if total <= 30000:
