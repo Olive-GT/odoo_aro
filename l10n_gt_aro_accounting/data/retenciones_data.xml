@@ -1,0 +1,107 @@
+<odoo>
+    <!-- Catálogo base de retenciones de Guatemala.
+         noupdate="1": las tasas y cuentas que ajuste el usuario no se pisan al
+         actualizar el módulo. Las cuentas contables quedan vacías a propósito y
+         deben asignarse en Contabilidad → Configuración → Tipos de Retención. -->
+    <data noupdate="1">
+
+        <!-- ================= ISR ================= -->
+        <record id="retencion_isr_compras" model="retencion.tipo">
+            <field name="name">Retención de ISR</field>
+            <field name="code">RET-ISR</field>
+            <field name="sequence">1</field>
+            <field name="impuesto">isr</field>
+            <field name="aplica_a">ambos</field>
+            <field name="base_calculo">subtotal</field>
+            <field name="modo_calculo">escalonado</field>
+            <field name="monto_minimo">2500.00</field>
+            <!-- Los tramos van en el mismo create: la restriccion del modelo exige
+                 que un tipo escalonado tenga al menos un tramo. -->
+            <field name="regla_ids" eval="[
+                (0, 0, {'sequence': 10, 'hasta': 30000.0, 'porcentaje': 5.0}),
+                (0, 0, {'sequence': 20, 'hasta': 0.0,     'porcentaje': 7.0}),
+            ]"/>
+        </record>
+
+        <!-- ================= IVA ================= -->
+        <record id="retencion_iva_exportador" model="retencion.tipo">
+            <field name="name">Retención de IVA - Exportador (65%)</field>
+            <field name="code">RET-IVA-EXP</field>
+            <field name="sequence">10</field>
+            <field name="impuesto">iva</field>
+            <field name="aplica_a">ambos</field>
+            <field name="base_calculo">iva</field>
+            <field name="modo_calculo">porcentaje</field>
+            <field name="percentage">65.0</field>
+        </record>
+
+        <record id="retencion_iva_sector_publico" model="retencion.tipo">
+            <field name="name">Retención de IVA - Sector público (25%)</field>
+            <field name="code">RET-IVA-PUB</field>
+            <field name="sequence">20</field>
+            <field name="impuesto">iva</field>
+            <field name="aplica_a">ambos</field>
+            <field name="base_calculo">iva</field>
+            <field name="modo_calculo">porcentaje</field>
+            <field name="percentage">25.0</field>
+        </record>
+
+        <record id="retencion_iva_tarjetas" model="retencion.tipo">
+            <field name="name">Retención de IVA - Operador de tarjetas (15%)</field>
+            <field name="code">RET-IVA-TAR</field>
+            <field name="sequence">30</field>
+            <field name="impuesto">iva</field>
+            <field name="aplica_a">ambos</field>
+            <field name="base_calculo">iva</field>
+            <field name="modo_calculo">porcentaje</field>
+            <field name="percentage">15.0</field>
+        </record>
+
+        <record id="retencion_iva_agente_especial" model="retencion.tipo">
+            <field name="name">Retención de IVA - Agente retenedor calificado (15%)</field>
+            <field name="code">RET-IVA-ESP</field>
+            <field name="sequence">40</field>
+            <field name="impuesto">iva</field>
+            <field name="aplica_a">ambos</field>
+            <field name="base_calculo">iva</field>
+            <field name="modo_calculo">porcentaje</field>
+            <field name="percentage">15.0</field>
+        </record>
+
+        <record id="retencion_iva_agropecuario" model="retencion.tipo">
+            <field name="name">Retención de IVA - Productos agropecuarios (15%)</field>
+            <field name="code">RET-IVA-AGR</field>
+            <field name="sequence">50</field>
+            <field name="impuesto">iva</field>
+            <field name="aplica_a">ambos</field>
+            <field name="base_calculo">iva</field>
+            <field name="modo_calculo">porcentaje</field>
+            <field name="percentage">15.0</field>
+        </record>
+
+        <!-- Única retención de IVA que se calcula sobre el total de la factura
+             y no sobre el monto del impuesto. -->
+        <record id="retencion_iva_combustible" model="retencion.tipo">
+            <field name="name">Retención de IVA - Combustible con tarjeta (1.5% del total)</field>
+            <field name="code">RET-IVA-COMB</field>
+            <field name="sequence">60</field>
+            <field name="impuesto">iva</field>
+            <field name="aplica_a">ambos</field>
+            <field name="base_calculo">total</field>
+            <field name="modo_calculo">porcentaje</field>
+            <field name="percentage">1.5</field>
+        </record>
+
+        <record id="retencion_iva_entidad_exenta" model="retencion.tipo">
+            <field name="name">Retención de IVA - Entidad exenta (100%)</field>
+            <field name="code">RET-IVA-EXE</field>
+            <field name="sequence">70</field>
+            <field name="impuesto">iva</field>
+            <field name="aplica_a">ambos</field>
+            <field name="base_calculo">iva</field>
+            <field name="modo_calculo">porcentaje</field>
+            <field name="percentage">100.0</field>
+        </record>
+
+    </data>
+</odoo>

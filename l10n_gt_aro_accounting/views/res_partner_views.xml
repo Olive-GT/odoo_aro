@@ -1,0 +1,25 @@
+<odoo>
+
+    <record id="view_partner_form_inherit_gt" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.gt</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='sales_purchases']" position="inside">
+                <group string="Exención de IVA" name="exencion_iva">
+                    <field name="exento_iva"/>
+                    <field name="exencion_resolucion" invisible="not exento_iva"
+                           required="exento_iva"/>
+                    <field name="exencion_fecha_inicio" invisible="not exento_iva"/>
+                    <field name="exencion_fecha_vencimiento" invisible="not exento_iva"/>
+                    <field name="exencion_vigente" invisible="not exento_iva"/>
+                </group>
+                <group string="Retención de IVA" name="retencion_iva">
+                    <field name="agente_retenedor_iva"/>
+                    <field name="retencion_iva_tipo_id" invisible="not agente_retenedor_iva"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

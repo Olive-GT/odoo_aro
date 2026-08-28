@@ -30,8 +30,6 @@ class ReporteFiscalUtils(models.AbstractModel):
         for move in facturas:
             partner = move.partner_id
 
-            aplica_isr = move.aplica_isr
-
             nit = partner.vat or '' if libro == 'compras' else move.company_id.vat or ''
             compania = partner.name or '' if libro == 'compras' else move.company_id.name or ''
             multiplier = -1 if move.move_type in ['out_refund', 'in_refund'] else 1
@@ -90,7 +88,8 @@ class ReporteFiscalUtils(models.AbstractModel):
             factura_total = 0
 
             for line in move.invoice_line_ids:
-                if aplica_isr and line.name == 'ISR':
+                # Las lineas de retencion no forman parte del libro fiscal.
+                if line._es_linea_retencion():
                     continue
                 
                 price_subtotal = line.price_subtotal * multiplier

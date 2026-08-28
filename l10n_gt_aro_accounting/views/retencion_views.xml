@@ -1,0 +1,155 @@
+<odoo>
+
+    <record id="view_retencion_tipo_list" model="ir.ui.view">
+        <field name="name">retencion.tipo.list</field>
+        <field name="model">retencion.tipo</field>
+        <field name="arch" type="xml">
+            <list string="Tipos de Retención">
+                <field name="sequence" widget="handle"/>
+                <field name="code"/>
+                <field name="name"/>
+                <field name="impuesto"/>
+                <field name="aplica_a"/>
+                <field name="base_calculo"/>
+                <field name="modo_calculo"/>
+                <field name="percentage" invisible="modo_calculo != 'porcentaje'"/>
+                <field name="monto_minimo" optional="hide"/>
+                <field name="account_id" optional="show"/>
+                <field name="account_client_id" optional="show"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_retencion_tipo_form" model="ir.ui.view">
+        <field name="name">retencion.tipo.form</field>
+        <field name="model">retencion.tipo</field>
+        <field name="arch" type="xml">
+            <form string="Tipo de Retención">
+                <sheet>
+                    <widget name="web_ribbon" title="Archivado" bg_color="text-bg-danger"
+                            invisible="active"/>
+                    <field name="active" invisible="1"/>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="Retención de IVA - Exportador (65%)"/></h1>
+                    </div>
+                    <group>
+                        <group string="Definición">
+                            <field name="code" placeholder="RET-IVA-EXP"/>
+                            <field name="impuesto"/>
+                            <field name="aplica_a"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="requiere_constancia"/>
+                        </group>
+                        <group string="Cálculo">
+                            <field name="base_calculo"/>
+                            <field name="tax_ids" widget="many2many_tags"
+                                   invisible="base_calculo != 'iva'"/>
+                            <field name="modo_calculo"/>
+                            <field name="percentage"
+                                   invisible="modo_calculo != 'porcentaje'"
+                                   required="modo_calculo == 'porcentaje'"/>
+                            <field name="monto_minimo"/>
+                        </group>
+                    </group>
+                    <group string="Tramos" invisible="modo_calculo != 'escalonado'">
+                        <field name="regla_ids" nolabel="1">
+                            <list editable="bottom">
+                                <field name="sequence" widget="handle"/>
+                                <field name="hasta"/>
+                                <field name="porcentaje"/>
+                            </list>
+                        </field>
+                        <div colspan="2" class="text-muted">
+                            El techo de cada tramo es acumulado. Usa 0 en el último tramo
+                            para indicar que no tiene límite.
+                        </div>
+                    </group>
+                    <group string="Cuentas contables">
+                        <field name="account_id"/>
+                        <field name="account_client_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_retencion_tipo_search" model="ir.ui.view">
+        <field name="name">retencion.tipo.search</field>
+        <field name="model">retencion.tipo</field>
+        <field name="arch" type="xml">
+            <search string="Tipos de Retención">
+                <field name="name"/>
+                <field name="code"/>
+                <filter name="filter_isr" string="ISR" domain="[('impuesto','=','isr')]"/>
+                <filter name="filter_iva" string="IVA" domain="[('impuesto','=','iva')]"/>
+                <separator/>
+                <filter name="filter_compras" string="Compras"
+                        domain="[('aplica_a','in',['compras','ambos'])]"/>
+                <filter name="filter_ventas" string="Ventas"
+                        domain="[('aplica_a','in',['ventas','ambos'])]"/>
+                <separator/>
+                <filter name="filter_inactive" string="Archivados" domain="[('active','=',False)]"/>
+                <group expand="0" string="Agrupar por">
+                    <filter name="group_impuesto" string="Impuesto" context="{'group_by':'impuesto'}"/>
+                    <filter name="group_aplica_a" string="Aplica a" context="{'group_by':'aplica_a'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_retencion_tipo" model="ir.actions.act_window">
+        <field name="name">Tipos de Retención</field>
+        <field name="res_model">retencion.tipo</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_retencion_tipo_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Define un tipo de retención</p>
+            <p>
+                Las retenciones de ISR e IVA se configuran aquí como datos: base de
+                cálculo, porcentaje o tramos, monto mínimo y cuentas contables.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_retencion_tipo"
+              name="Tipos de Retención"
+              parent="account.menu_finance_configuration"
+              action="action_retencion_tipo"
+              sequence="90"/>
+
+    <record id="view_retencion_aplicada_list" model="ir.ui.view">
+        <field name="name">retencion.aplicada.list</field>
+        <field name="model">retencion.aplicada</field>
+        <field name="arch" type="xml">
+            <list string="Retenciones" create="0">
+                <field name="move_id"/>
+                <field name="tipo_id"/>
+                <field name="impuesto"/>
+                <field name="numero_constancia"/>
+                <field name="fecha_constancia"/>
+                <field name="base"/>
+                <field name="amount" sum="Total retenido"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_retencion_aplicada" model="ir.actions.act_window">
+        <field name="name">Constancias de Retención</field>
+        <field name="res_model">retencion.aplicada</field>
+        <field name="view_mode">list</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">Aún no hay retenciones registradas</p>
+            <p>Las retenciones se aplican desde la pestaña "Retenciones" de cada factura.</p>
+        </field>
+    </record>
+
+    <menuitem id="menu_retencion_aplicada"
+              name="Constancias de Retención"
+              parent="account.menu_finance_entries"
+              action="action_retencion_aplicada"
+              sequence="90"/>
+
+</odoo>

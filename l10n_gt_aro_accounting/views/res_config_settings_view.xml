@@ -1,17 +1,24 @@
 <odoo>
-    <record id="res_config_settings_view_form_inherit_isr" model="ir.ui.view">
-        <field name="name">res.config.settings.view.form.inherit.isr</field>
+    <record id="res_config_settings_view_form_inherit_retenciones" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.retenciones</field>
         <field name="model">res.config.settings</field>
         <field name="inherit_id" ref="account.res_config_settings_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='purchase_tax_id']" position="after">
                 <div class="row mt16">
-                    <label string="Cuenta ISR Proveedores" for="isr_account_id" class="col-lg-3 o_light_label"/>
-                    <field name="isr_account_id"/>
+                    <label string="Retención de ISR por defecto" for="retencion_isr_tipo_id"
+                           class="col-lg-3 o_light_label"/>
+                    <field name="retencion_isr_tipo_id"/>
                 </div>
                 <div class="row mt16">
-                    <label string="Cuenta ISR Clientes" for="isr_account_client_id" class="col-lg-3 o_light_label"/>
-                    <field name="isr_account_client_id"/>
+                    <label string="Posición fiscal de exención de IVA"
+                           for="exencion_iva_fiscal_position_id" class="col-lg-3 o_light_label"/>
+                    <field name="exencion_iva_fiscal_position_id"/>
+                </div>
+                <div class="row mt16">
+                    <button name="action_abrir_tipos_retencion" type="object"
+                            string="Configurar tipos de retención"
+                            class="btn-link" icon="oi-arrow-right"/>
                 </div>
             </xpath>
         </field>

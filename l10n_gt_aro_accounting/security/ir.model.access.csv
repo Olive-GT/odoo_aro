@@ -1,2 +1,8 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_reporte_libros_wizard,reporte.libros.wizard,model_reporte_libros_wizard,,1,0,1,0
+access_retencion_tipo_user,retencion.tipo.user,model_retencion_tipo,base.group_user,1,0,0,0
+access_retencion_tipo_manager,retencion.tipo.manager,model_retencion_tipo,account.group_account_manager,1,1,1,1
+access_retencion_regla_user,retencion.regla.user,model_retencion_regla,base.group_user,1,0,0,0
+access_retencion_regla_manager,retencion.regla.manager,model_retencion_regla,account.group_account_manager,1,1,1,1
+access_retencion_aplicada_invoice,retencion.aplicada.invoice,model_retencion_aplicada,account.group_account_invoice,1,1,1,1
+access_retencion_aplicada_user,retencion.aplicada.user,model_retencion_aplicada,base.group_user,1,0,0,0

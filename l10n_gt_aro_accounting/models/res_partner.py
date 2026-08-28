@@ -1,5 +1,5 @@
 # models/res_partner.py
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 import re
 
@@ -9,15 +9,83 @@ class ResPartner(models.Model):
 
     company_type = fields.Selection(selection_add=[('foreign', 'Extranjero')])
 
-    @api.model
-    def create(self, vals):
-        vals['company_id'] = False  # Siempre contacto global
-        return super().create(vals)
+    # ------------------------------------------------------------------
+    # Exención de IVA
+    # ------------------------------------------------------------------
+    exento_iva = fields.Boolean(
+        string='Exento de IVA',
+        help="El contacto cuenta con constancia de exención del IVA emitida por la SAT. "
+             "Al marcarlo se le asigna la posición fiscal de exención configurada en Ajustes.")
+    exencion_resolucion = fields.Char(string='No. de resolución de exención')
+    exencion_fecha_inicio = fields.Date(string='Vigente desde')
+    exencion_fecha_vencimiento = fields.Date(string='Vigente hasta')
+    exencion_vigente = fields.Boolean(
+        string='Exención vigente', compute='_compute_exencion_vigente')
+
+    # ------------------------------------------------------------------
+    # Retención de IVA
+    # ------------------------------------------------------------------
+    agente_retenedor_iva = fields.Boolean(
+        string='Agente retenedor de IVA',
+        help="El contacto está calificado por la SAT como agente de retención del IVA.")
+    retencion_iva_tipo_id = fields.Many2one(
+        'retencion.tipo', string='Retención de IVA por defecto',
+        domain=[('impuesto', '=', 'iva')],
+        help="Tipo de retención de IVA que se sugiere en las facturas de este contacto.")
+
+    @api.depends('exento_iva', 'exencion_fecha_inicio', 'exencion_fecha_vencimiento')
+    def _compute_exencion_vigente(self):
+        hoy = fields.Date.context_today(self)
+        for partner in self:
+            partner.exencion_vigente = partner._exencion_vigente_en(hoy)
+
+    def _exencion_vigente_en(self, fecha):
+        """La exención está vigente en `fecha`. Las fechas vacías no acotan la vigencia."""
+        self.ensure_one()
+        if not self.exento_iva:
+            return False
+        if not fecha:
+            return True
+        if self.exencion_fecha_inicio and fecha < self.exencion_fecha_inicio:
+            return False
+        if self.exencion_fecha_vencimiento and fecha > self.exencion_fecha_vencimiento:
+            return False
+        return True
+
+    def _aplicar_posicion_fiscal_exencion(self):
+        """Asigna la posición fiscal de exención configurada a los contactos exentos."""
+        posicion_id = self.env['ir.config_parameter'].sudo().get_param(
+            'contabilidad_custom.exencion_iva_fiscal_position_id')
+        if not posicion_id:
+            return
+        exentos = self.filtered(lambda p: p.exento_iva and not p.property_account_position_id)
+        if exentos:
+            exentos.write({'property_account_position_id': int(posicion_id)})
+
+    @api.constrains('exento_iva', 'exencion_fecha_inicio', 'exencion_fecha_vencimiento')
+    def _check_exencion(self):
+        for partner in self:
+            inicio = partner.exencion_fecha_inicio
+            fin = partner.exencion_fecha_vencimiento
+            if inicio and fin and fin < inicio:
+                raise ValidationError(
+                    _("La fecha de vencimiento de la exención no puede ser anterior al inicio de vigencia."))
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            vals['company_id'] = False  # Siempre contacto global
+        partners = super().create(vals_list)
+        partners._aplicar_posicion_fiscal_exencion()
+        return partners
 
     def write(self, vals):
         if 'company_id' in vals:
             vals['company_id'] = False
-        return super().write(vals)
+        res = super().write(vals)
+        if vals.get('exento_iva'):
+            self._aplicar_posicion_fiscal_exencion()
+        return res
 
     @api.constrains('vat', 'company_type')
     def _check_vat(self):
