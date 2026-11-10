@@ -28,10 +28,14 @@ class ReporteFiscalUtils(models.AbstractModel):
         }
 
         for move in facturas:
-            partner = move.partner_id
+            # En ambos libros se reporta la contraparte de la factura: el
+            # cliente en ventas y el proveedor en compras. Se usa la entidad
+            # comercial para que una factura dirigida a un contacto muestre el
+            # nombre y NIT de la empresa, no los del contacto.
+            partner = move.commercial_partner_id
 
-            nit = partner.vat or '' if libro == 'compras' else move.company_id.vat or ''
-            compania = partner.name or '' if libro == 'compras' else move.company_id.name or ''
+            nit = partner.vat or ''
+            compania = partner.name or ''
             multiplier = -1 if move.move_type in ['out_refund', 'in_refund'] else 1
 
             # Inicializamos el resumen por factura
