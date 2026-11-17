@@ -1,0 +1,12 @@
+<odoo>
+    <record id="view_company_form_sin_inventario" model="ir.ui.view">
+        <field name="name">res.company.form.sin.inventario</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='company_registry']" position="after">
+                <field name="sin_inventario"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

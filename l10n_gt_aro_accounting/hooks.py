@@ -8,8 +8,8 @@ def post_init_hook(env):
     """Normaliza las retenciones de ISR creadas por la version anterior del modulo.
 
     Antes las lineas de retencion se identificaban por su texto ('ISR') y las
-    cuentas vivian en parametros de sistema. Aqui se copian esas cuentas al nuevo
-    tipo de retencion, se marcan las lineas historicas con el flag `es_retencion`
+    cuentas vivian en parametros de sistema. Aqui se asigna a cada empresa su
+    cuenta en el nuevo tipo de retencion, se marcan las lineas historicas con el flag `es_retencion`
     y se crea el registro `retencion.aplicada` de cada factura.
 
     Los pasos 2 y 3 son de conveniencia, no de correccion: `_es_linea_retencion()`
@@ -22,16 +22,39 @@ def post_init_hook(env):
     if not tipo_isr:
         return
 
-    # 1. Las cuentas configuradas antes pasan al tipo de retencion.
-    valores = {}
-    cuenta_proveedor = param.get_param('contabilidad_custom.isr_account_id')
-    cuenta_cliente = param.get_param('contabilidad_custom.isr_account_client_id')
-    if cuenta_proveedor and not tipo_isr.account_id:
-        valores['account_id'] = int(cuenta_proveedor)
-    if cuenta_cliente and not tipo_isr.account_client_id:
-        valores['account_client_id'] = int(cuenta_cliente)
-    if valores:
-        tipo_isr.write(valores)
+    # 1. Cada empresa conserva la cuenta de ISR que ya usaba. El parametro de
+    #    sistema anterior era uno solo para toda la base, pero en una base con
+    #    varias empresas cada una contabilizaba el ISR en su propia cuenta; por
+    #    eso se lee de las facturas historicas y el parametro queda de respaldo.
+    env.cr.execute("""
+        SELECT am.company_id,
+               am.move_type IN ('in_invoice', 'in_refund') AS es_compra,
+               aml.account_id,
+               COUNT(*) AS veces
+          FROM account_move_line aml
+          JOIN account_move am ON am.id = aml.move_id
+         WHERE aml.display_type = 'product'
+           AND aml.name = 'ISR'
+           AND am.aplica_isr IS TRUE
+           AND am.move_type IN ('in_invoice', 'in_refund', 'out_invoice', 'out_refund')
+      GROUP BY am.company_id, es_compra, aml.account_id
+      ORDER BY veces DESC
+    """)
+    for company_id, es_compra, account_id, _veces in env.cr.fetchall():
+        tipo = tipo_isr.with_company(company_id)
+        campo = 'account_id' if es_compra else 'account_client_id'
+        if not tipo[campo]:
+            tipo[campo] = account_id
+
+    Account = env['account.account']
+    for clave, campo in (('contabilidad_custom.isr_account_id', 'account_id'),
+                         ('contabilidad_custom.isr_account_client_id', 'account_client_id')):
+        valor = param.get_param(clave)
+        cuenta = Account.browse(int(valor)).exists() if valor else Account
+        for company in cuenta.company_ids:
+            tipo = tipo_isr.with_company(company)
+            if not tipo[campo]:
+                tipo[campo] = cuenta
 
     if not param.get_param('contabilidad_custom.retencion_isr_tipo_id'):
         param.set_param('contabilidad_custom.retencion_isr_tipo_id', str(tipo_isr.id))

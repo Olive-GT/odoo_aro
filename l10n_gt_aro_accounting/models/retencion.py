@@ -58,14 +58,20 @@ class RetencionTipo(models.Model):
         help="Si la base calculada es menor a este monto no se aplica la retencion. "
              "Para el ISR de compras la SAT lo fija en Q2,500.")
 
+    # Las cuentas son por empresa (company_dependent): el catalogo de retenciones es
+    # uno solo, pero cada empresa de la base contabiliza en sus propias cuentas.
     account_id = fields.Many2one(
         'account.account', string='Cuenta contable (proveedores)',
+        company_dependent=True,
         domain=[('deprecated', '=', False)],
-        help="Cuenta usada en la linea de retencion de facturas de proveedor.")
+        help="Cuenta usada en la linea de retencion de facturas de proveedor. "
+             "Se configura por empresa: cambia de empresa para ver o asignar la suya.")
     account_client_id = fields.Many2one(
         'account.account', string='Cuenta contable (clientes)',
+        company_dependent=True,
         domain=[('deprecated', '=', False)],
-        help="Cuenta usada en la linea de retencion de facturas de cliente.")
+        help="Cuenta usada en la linea de retencion de facturas de cliente. "
+             "Se configura por empresa: cambia de empresa para ver o asignar la suya.")
 
     requiere_constancia = fields.Boolean(
         string='Requiere constancia', default=False,
@@ -95,7 +101,11 @@ class RetencionTipo(models.Model):
                     % tipo.name)
 
     def _get_account(self, move_type):
-        """Devuelve la cuenta contable que corresponde al tipo de documento."""
+        """Devuelve la cuenta contable que corresponde al tipo de documento.
+
+        Las cuentas son por empresa: quien llama debe fijar la empresa de la
+        factura con `with_company()`.
+        """
         self.ensure_one()
         es_compra = move_type in ('in_invoice', 'in_refund')
         account = self.account_id if es_compra else self.account_client_id

@@ -101,7 +101,7 @@ class AccountMove(models.Model):
                 retencion._recalcular(move)
                 if not retencion.amount:
                     continue
-                account = retencion.tipo_id._get_account(move.move_type)
+                account = retencion.tipo_id.with_company(move.company_id)._get_account(move.move_type)
                 move.invoice_line_ids += self.env['account.move.line'].new({
                     'name': retencion.tipo_id.code or retencion.tipo_id.name,
                     'quantity': 1,
@@ -219,6 +219,14 @@ class AccountMove(models.Model):
             move._check_exencion_vigente()
         return super()._post(soft=soft)
 
+    # Un mismo documento (serie + número) no se registra dos veces para el mismo
+    # contacto, en la misma empresa y con el mismo tipo de documento. No es global:
+    # dos emisores distintos pueden coincidir en serie y número, y una factura
+    # entre dos empresas de esta base se registra en ambas (venta en una, compra
+    # en la otra). Se conserva el nombre de la restricción para que Odoo reemplace
+    # la anterior al actualizar el módulo.
     _sql_constraints = [
-        ('unique_serie_numero', 'unique(serie, numero)', 'La combinación de Serie y Número debe ser única.')
+        ('unique_serie_numero',
+         'unique(company_id, partner_id, move_type, serie, numero)',
+         'Ya existe un documento con esa Serie y Número para este contacto en esta empresa.')
     ]

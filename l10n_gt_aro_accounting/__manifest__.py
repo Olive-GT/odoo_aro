@@ -3,7 +3,8 @@
     'summary': "Campos fiscales, retenciones de ISR/IVA, exención de IVA y libros de compras y ventas",
     'description': """
         Agrega campos Serie, Numero, Tipo_DTE y Descripcion_general, y verifica
-        que no se repitan Serie y Numero juntos.
+        que no se repitan Serie y Numero para el mismo contacto, empresa y tipo
+        de documento.
 
         Incluye un catálogo configurable de retenciones (ISR e IVA) donde las
         tasas, tramos, bases de cálculo y cuentas contables se definen como
@@ -13,7 +14,7 @@
     'author': "Olive Tech",
     'website': "",
     'category': 'Accounting',
-    'version': '18.0.2.0',
+    'version': '18.0.2.1',
     'depends': [
         'account',
         'base',
